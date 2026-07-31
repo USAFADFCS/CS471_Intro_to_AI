@@ -3,3 +3,21 @@ teachbooks # depends on jupyter-book v1
 
 # Our favourite Sphinx extensions in one line, replace with individual extensions if you prefer some extensions not to be included (https://github.com/TeachBooks/TeachBooks-Favourites)
 git+https://github.com/TeachBooks/TeachBooks-Favourites
+jupyterquiz
+sphinx_dropdown_toggle
+sphinxcontrib-mermaid
+myst-parser
+sphinx_apa_references
+sphinx_thebe
+numpy
+matplotlib 
+scikit-learn 
+pandas 
+tensorflow
+keras
+pydot
+graphviz
+sentence_transformers
+chromadb
+shap
+seaborn

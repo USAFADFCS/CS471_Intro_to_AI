@@ -2,3 +2,14 @@
 div.attribution > .admonition-title::after {
     content: "\f10d";
 }
+
+/* Ensure the left sidebar always scrolls and has padding at the bottom */
+.bd-sidebar {
+    overflow-y: auto !important;
+    padding-bottom: 80px !important; 
+}
+
+/* If you are referring to the RIGHT-hand "On this page" TOC */
+.bd-toc {
+    padding-bottom: 80px !important;
+}

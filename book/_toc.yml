@@ -4,44 +4,118 @@ format: jb-book
 root: intro.md
 
 parts:
-  - caption: Part with some content # A title for the whole the subtree, e.g. shown above the subtree in ToCs, configuration part of sphinx-external-toc (https://sphinx-external-toc.readthedocs.io/en/latest/intro.html)
+  - caption: Sections # A title for the whole the subtree, e.g. shown above the subtree in ToCs, configuration part of sphinx-external-toc (https://sphinx-external-toc.readthedocs.io/en/latest/intro.html)
     numbered: false                 # Default value (line can be removed), whether to number the chapters/sections in this part, configuration part of sphinx-external-toc (https://sphinx-external-toc.readthedocs.io/en/latest/intro.html)
     style: numerical                # Default value (line can be removed), style of numbering for this part, configuration part of TeachBooks' version of sphinx-external-toc (https://github.com/TeachBooks/sphinx-external-toc?tab=readme-ov-file#toc-tree-options)
     restart_numbering: false        # Default value (line can be removed), whether to restart numbering for this part, configuration part of TeachBooks' version of sphinx-external-toc (https://github.com/TeachBooks/sphinx-external-toc?tab=readme-ov-file#toc-tree-options)
     chapters:
-    - file: some_content/overview.md
+    - file: lessons/1/intro_to_AI.md
       sections:
-      - file: some_content/text_and_code.ipynb
-  - caption: Exercises
+      - file: lessons/1/intro_to_AI_nb.ipynb
+    - file: lessons/2/anatomy_of_AI.md
+      sections:
+      - file: lessons/2/anatomy_of_AI_nb.ipynb
+    - file: lessons/3/ai_llm_workshop.md
+      sections:
+      - file: lessons/3/ai_llm_workshop_nb.ipynb
+    - file: lessons/4/problem_formulation.md
+      sections:
+      - file: lessons/4/problem_formulation_nb.ipynb
+    - file: lessons/5/search.md
+      sections:
+      - file: lessons/5/search_nb.ipynb
+    - file: lessons/6/informed_search.md
+      sections:
+      - file: lessons/6/informed_search_nb.ipynb
+    - file: lessons/7/heuristics.md
+      sections:
+      - file: lessons/7/heuristics_nb.ipynb
+    - file: lessons/8/ai_adversarial_stochastic.md
+      sections:
+      - file: lessons/8/ai_adversarial_stochastic_nb.ipynb
+    - file: lessons/9/workshop_review.md
+    - file: lessons/26/mlfoundations.md
+      sections:
+      - file: lessons/26/evaluating_performance.ipynb
+      - file: lessons/26/Bias_Variance_Tradeoff.ipynb
+      - file: lessons/26/Predict_Component_Failure_(LogReg-QDA).ipynb
+      - file: lessons/26/Classifying_Radar_Profiles(SVM-QDA).ipynb
+      - file: lessons/26/dtree_rf.ipynb
+    - file: lessons/27/bayes_classification.md
+      sections:
+      - file: lessons/27/triage_classification.ipynb
+      - file: lessons/27/email_phishing.ipynb
+      - file: lessons/27/handling_unknown.ipynb
+    - file: lessons/28/ann_part1.md
+      sections:
+      - file: lessons/28/forward_prop.ipynb
+      - file: lessons/28/ANN_vs_linear.ipynb
+      - file: lessons/28/multi_output_reg.ipynb
+    - file: lessons/29/ann_part2.md
+      sections:
+      - file: lessons/29/grad_dec.ipynb
+      - file: lessons/29/overfit_reg.ipynb
+    - file: lessons/30/deeplearning.md
+      sections:
+      - file: lessons/30/deeptransfer.ipynb
+      - file: lessons/30/autoencoder.ipynb
+    - file: lessons/31/intro_cnn.md
+      sections:
+      - file: lessons/31/edge_detection.ipynb
+      - file: lessons/31/translation_invariance.ipynb
+      - file: lessons/31/visualize_features.ipynb
+      - file: lessons/31/cnn_1d.ipynb
+    - file: lessons/32/ml_applications.md
+      sections:
+      - file: lessons/32/fine_tuning_satellite.ipynb
+    - file: lessons/33/transformers_LLMs.md
+      sections:
+      - file: lessons/33/llm_APIs.ipynb
+    - file: lessons/34/prompt_eng.md
+      sections: 
+      - file: lessons/34/prompt_eng_nb.ipynb
+    - file: lessons/35/rag.md
+      sections: 
+      - file: lessons/35/rag_nb.ipynb
+    - file: lessons/36/failure_modes_ethics.md
+      sections: 
+      - file: lessons/36/failure_modes_ethics_nb.ipynb
+    - file: lessons/37/agentic_ai.md
+      sections: 
+      - file: lessons/37/agentic_ai_nb.ipynb
+    - file: lessons/38/ml_workshop.md
+      sections: 
+      - file: lessons/38/ml_workshop_nb.ipynb
+  - caption: Examples
     chapters:
-    - file: exercises.md
-      sections:
-      - file: exercises/001.md
-      - file: exercises/002.md
-      - file: exercises/003.md
-      - file: exercises/004.md
-      - file: exercises/005.md
-      - file: exercises/005a.md
-      - file: exercises/006.md
-      - file: exercises/summary
-    - file: syntax_exercises.md
-      sections:
-      - file: syntax_exercises/007.md
-      - file: syntax_exercises/008.md
-      - file: syntax_exercises/009.md
-      - file: syntax_exercises/010.md
-      - file: syntax_exercises/011.md
-      - file: syntax_exercises/012.md
-      - file: syntax_exercises/013.md
-    - file: extensions.md
-      sections:
-      - file: exercises/007.md
-      - file: extension_exercises/017.md
-      - file: extension_exercises/014.md
-      - file: extension_exercises/015.md
-      - file: extension_exercises/016.md
+    - file: exercises/L01.md
+    - file: exercises/L02.md
+    - file: exercises/L03.md
+    - file: exercises/L04.md
+    - file: exercises/L05.md
+    - file: exercises/L06.md
+    - file: exercises/L07.md
+    - file: exercises/L08.md
+    - file: exercises/L26.md
+    - file: exercises/L27.md
+    - file: exercises/L28.md
+    - file: exercises/L29.md
+    - file: exercises/L30.md
+    - file: exercises/L31.md
+    - file: exercises/L32.md
+    - file: exercises/L33.md
+    - file: exercises/L34.md
+    - file: exercises/L35.md
+    - file: exercises/L36.md
+    - file: exercises/L37.md
   - caption: Miscellaneous
     chapters:
+    - title: AI Sim Lab
+      url: https://thecodeheadmt.github.io/CS471/
+    - title: ML Addict
+      url: https://www.mladdict.com/
+    - file: notation.md
+    - file: terms.md
     - file: references.md
-    - file: changelog.md
-    - file: credits.md
+    # - file: changelog.md
+    # - file: credits.md

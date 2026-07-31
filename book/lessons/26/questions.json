@@ -1,0 +1,23 @@
+[
+  {
+    "question": "Which of the following content types are supported by TeachBooks?",
+    "type": "many_choice",
+    "answers": [
+      {
+        "answer": "Markdown text",
+        "correct": true,
+        "feedback": "Correct! Markdown is the primary text formatting language used."
+      },
+      {
+        "answer": "Interactive Python cells",
+        "correct": true,
+        "feedback": "Yes, executable code cells are fully supported!"
+      },
+      {
+        "answer": "Teleportation scripts",
+        "correct": false,
+        "feedback": "Not quite yet, maybe in a future update."
+      }
+    ]
+  }
+]

@@ -1,3 +1,12 @@
+# Temporary materials used for AI content creation (hacked up old materials)
+temp_mats/
+
+# Local builds used for testing
+book/_build/
+
+# venv envinroment
+.471venv/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -6,6 +15,7 @@ __pycache__/
 # Python
 .Python
 .vscode/
+./jnb_env
 
 # PyInstaller
 #  Usually these files are written by a python script from a template

@@ -1,6 +1,6 @@
 # This config includes an opinionated list of configuration options of TeachBooks, Jupyterbook v1, Sphinx and other extensions part of TeachBooks-Favourites.
 
-author: TeachBooks Team, built with <a href="https://teachbooks.io">TeachBooks</a>, <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener noreferrer"">CC BY 4.0<img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/cc.svg" alt=""><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/by.svg" alt=""></a>
+author: DFCS CS471 Team, built with <a href="https://teachbooks.io">TeachBooks</a>, <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener noreferrer"">CC BY 4.0<img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/cc.svg" alt=""><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/by.svg" alt=""></a>
                                                      # Replace TeachBooks Teams with your own name in the line above, configuratin part of JupyterBook: https://jupyterbook.org/en/stable/customize/config.html
 execute:
   execute_notebooks: "off"                           # Replace this if you want don't have notebooks with output and you want to add notebook output during build, configuration part of Jupyterbook v1 (https://jupyterbook.org/en/stable/customize/config.html)
@@ -14,6 +14,10 @@ html:
 sphinx:                                              # Options passed on to the underlying sphinx-parser
   extra_extensions:                                  # Sets a list of extensions to load by sphinx, configuration part of Sphinx (https://www.sphinx-doc.org/en/master/index.html)
     - teachbooks_favourites                          # Gives you a starter package of extensions to use in your book, replace with individual extensions if you prefer some extensions not to be included (https://github.com/TeachBooks/TeachBooks-Favourites)
+    - sphinx_dropdown_toggle
+    - sphinx_apa_references
+    - sphinx_thebe 
+    - sphinxcontrib.mermaid
   config:
     language: en                                     # Defines language (English) of everything except the content itself. For Dutch: replace with `nl`, configuration part of Sphinx (https://www.sphinx-doc.org/en/master/index.html)
     html_js_files:
@@ -21,15 +25,16 @@ sphinx:                                              # Options passed on to the 
     thebe_config:
       use_thebe_lite: true                           # Required for live code, part of TeachBooks-Sphinx-Thebe (https://teachbooks.io/manual/features/live_code.html)
       exclude_patterns: ["**/_*.yml", "**/*.md", "**/*.ipynb"] #exclude files which should not be accessible for live code, configuration part of TeachBooks-Sphinx-Thebe (https://teachbooks.io/manual/features/live_code.html)
-    html_favicon: "figures/TB_favicon.ico"           # Replace this with your own favicon, configuration part of Sphinx (https://www.sphinx-doc.org/en/master/index.html)
+    html_favicon: "figures/TB_favicon3.ico"           # Replace this with your own favicon, configuration part of Sphinx (https://www.sphinx-doc.org/en/master/index.html)
     html_baseurl:  "https://<user/org>.io/<repo>"    # Replace this with your own URL, configuration part of Sphinx (https://www.sphinx-doc.org/en/master/index.html)
     html_theme_options:
-      home_page_in_toc: true                         # Replace with false it you don't want the landing page to be shown in the table of contents.
+      show_navbar_depth: 2  # Set this to 2 or 3 to keep subsections expanded
+      collapse_navigation: false
       logo:
-        text:        Template                        # Replace this with your own book title, configuration part of Sphinx (https://www.sphinx-doc.org/en/master/index.html)
-        image_light: TeachBooks_logo.svg             # Put your logo for the light mode here (can be the same as image_dark), configuration part of Sphinx (https://www.sphinx-doc.org/en/master/index.html)
-        image_dark:  TeachBooks_logo_inverted.svg    # Put your logo for the dark mode here (can be the same as image_light), configuration part of Sphinx (https://www.sphinx-doc.org/en/master/index.html)
-      repository_url: "https://github.com/user/repo" # Add your own repo URL here, configuration part of Jupyterbook v1 (https://jupyterbook.org/en/stable/customize/config.html)
+        text:        Comp Sci 471 - Artificial Intelligence                        # Replace this with your own book title, configuration part of Sphinx (https://www.sphinx-doc.org/en/master/index.html)
+        image_light: DFCS_nobg.png             # Put your logo for the light mode here (can be the same as image_dark), configuration part of Sphinx (https://www.sphinx-doc.org/en/master/index.html)
+        image_dark:  DFCS_nobg.png    # Put your logo for the dark mode here (can be the same as image_light), configuration part of Sphinx (https://www.sphinx-doc.org/en/master/index.html)
+      repository_url: "https://github.com/TheCodeheadMT/471Book" # Add your own repo URL here, configuration part of Jupyterbook v1 (https://jupyterbook.org/en/stable/customize/config.html)
       path_to_docs:          "book"                  # Required for edit_page_button, should be book if you're using TeachBooks package (https://github.com/TeachBooks/TeachBooks) or the TeachBooks deploy book workflow (https://teachbooks.io/manual/external/deploy-book-workflow/README.html), configuration part of Jupyterbook v1 (https://jupyterbook.org/en/stable/customize/config.html)
       repository_branch:     "main"                  # Replace when you change the name of your published branch (required for edit_page_button), configuration part of Jupyterbook v1 (https://jupyterbook.org/en/stable/customize/config.html)
       use_edit_page_button:  true                    # Replace with false if you don't want the edit page button (i.e. if you don't user to propose changes themselves or have a private repo), configuration part of Jupyterbook v1 (https://jupyterbook.org/en/stable/customize/config.html)
@@ -92,7 +97,7 @@ sphinx:                                              # Options passed on to the 
         warn_missing: false                          # Default value (line can be removed), doesn't raise a warning for missing sources, configuration part of Sphinx Metadata Figure (https://teachbooks.io/manual/_git/github.com_TeachBooks_Sphinx-Metadata-Figure/main/MANUAL.html)
     git_untracked_check_dependencies: false          # Doesn't check date of dependencies if file is not tracked by git (yet), configuration part of Sphinx-Last-Updated-by-Git (https://github.com/TeachBooks/sphinx-last-updated-by-git)
     git_untracked_show_sourcelink: true              # Keeps sourcefiles in book when it is not tracked by git (yet), configuration part of Sphinx-Last-Updated-by-Git (https://github.com/TeachBooks/sphinx-last-updated-by-git)
-    git_last_updated_timezone: 'Europe/Amsterdam'    # Sets local timezone for last updated date, otherwise uses local time zone of build, configuration part of Sphinx-Last-Updated-by-Git (https://github.com/TeachBooks/sphinx-last-updated-by-git)
+    git_last_updated_timezone: 'America/Denver'    # Sets local timezone for last updated date, otherwise uses local time zone of build, configuration part of Sphinx-Last-Updated-by-Git (https://github.com/TeachBooks/sphinx-last-updated-by-git)
     git_exclude_patterns: []                         # Default value (line can be removed), sets a list of patterns to *skip* in git last updated date checking, configuration part of Sphinx-Last-Updated-by-Git (https://github.com/TeachBooks/sphinx-last-updated-by-git)
     git_exclude_commits: []                          # Default value (line can be removed), sets a list of commit hashes to *skip* in git last updated date checking, configuration part of Sphinx-Last-Updated-by-Git (https://github.com/TeachBooks/sphinx-last-updated-by-git)
     sphinx_gated_directives:
@@ -107,7 +112,6 @@ sphinx:                                              # Options passed on to the 
     zoomies_toolbar: ["zoomIn", "zoomOut", "oneToOne", "reset"] # Default value (line can be removed), tools to show in the zoomable view, configuration part of TeachBooks-Zoomies (https://github.com/TeachBooks/TeachBooks-Zoomies)
     zoomies_invert_colors: false                     # Default value (line can be removed), disables inversion of colours in the zoomable view as this functionality is provided by Shpinx-Image-Inverter, configuration part of TeachBooks-Zoomies (https://github.com/TeachBooks/TeachBooks-Zoomies)
     zoomies_bg_apply_to_img: true                    # Default value (line can be removed), adds a background/padding directly to the image in the zoomable view., configuration part of TeachBooks-Zoomies (https://github.com/TeachBooks/TeachBooks-Zoomies)
-    todo_include_todos: true                         # Enables to dos in documentation, configuration part of sphinx.ext.todo (https://www.sphinx-doc.org/en/master/usage/extensions/todo.html)
 
 
 teachbooks:
