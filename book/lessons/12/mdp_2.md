@@ -59,20 +59,20 @@ If an autonomous missile defense system computes the optimal action-values ($Q^*
 ## Knowledge Check & Practice Questions
 
 1. An autonomous sentry drone at a contested intersection assigns a 70% probability to turning left and a 30% probability to going straight to prevent adversaries from predicting its patrol route. What type of policy is the drone using?<br>
-A) A deterministic policy<br>
-B) A stochastic policy<br>
-C) An optimal state-value function<br>
-D) A transition function<br>
+    A) A deterministic policy<br>
+    B) A stochastic policy<br>
+    C) An optimal state-value function<br>
+    D) A transition function<br>
 
 2. An AI commander must decide whether to execute a localized cyber-attack or wait for more intelligence. Which mathematical function should it use to directly compare the expected returns of these two specific actions from its current state?<br>
-A) The State-Value Function $V^\pi(s)$<br>
-B) The Expected Return $G$<br>
-C) The Action-Value Function $Q^\pi(s, a)$<br>
-D) The Discount Factor $\gamma$<br>
+    A) The State-Value Function $V^\pi(s)$<br>
+    B) The Expected Return $G$<br>
+    C) The Action-Value Function $Q^\pi(s, a)$<br>
+    D) The Discount Factor $\gamma$<br>
 
-3. A Space Force reconnaissance satellite receives an immediate reward of $+4$ now for capturing an image, and a reward of $+10$ one step later when the image is transmitted to a ground station. If the discount factor is $\gamma = 0.5$, what is the expected two-step return ($G$)?<br>
-A) 14<br>
-B) 7<br>
-C) 9<br>
-D) 5<br>
+3. A Space Force reconnaissance satellite receives an immediate reward of $+4$ for capturing an image, and a reward of $+10$ one step later when the image is transmitted to a ground station. If the discount factor is $\gamma = 0.5$, what is the expected two-step return ($G$)?<br>
+    A) 14<br>
+    B) 7<br>
+    C) 9<br>
+    D) 5<br>
 
