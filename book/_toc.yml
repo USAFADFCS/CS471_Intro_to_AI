@@ -34,6 +34,9 @@ parts:
       sections:
       - file: lessons/8/ai_adversarial_stochastic_nb.ipynb
     - file: lessons/9/workshop_review.md
+    - file: lessons/11/mdp.md
+      sections:
+      - file: lessons/11/mdp_nb.ipynb
     - file: lessons/26/mlfoundations.md
       sections:
       - file: lessons/26/evaluating_performance.ipynb
@@ -86,6 +89,9 @@ parts:
     - file: lessons/38/ml_workshop.md
       sections: 
       - file: lessons/38/ml_workshop_nb.ipynb
+  - caption: Worksheets
+    chapters:
+      - file: worksheets/worksheets.md
   - caption: Examples
     chapters:
     - file: exercises/L01.md
@@ -96,6 +102,7 @@ parts:
     - file: exercises/L06.md
     - file: exercises/L07.md
     - file: exercises/L08.md
+    - file: exercises/L11.md
     - file: exercises/L26.md
     - file: exercises/L27.md
     - file: exercises/L28.md
