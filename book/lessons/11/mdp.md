@@ -131,6 +131,14 @@ Mathematics: It guarantees that infinite sequences eventually sum to a finite li
 Operational Reality: A guaranteed blocked threat today is inherently more valuable than the promise of a blocked threat three weeks from now, given the extreme volatility of cyberspace.
 
 
+
+## Summary Infographic
+![Markov Decision Process](../../figures/markov_1.png "Markov Decision Process I")
+
+<br>
+<hr width="100%" size="4" color="black">
+
+
 ## Knowledge Check & Practice Questions
 
 1. If an autonomous agent's state representation only includes its current GPS coordinates, but its fuel consumption (which determines its next physical state) heavily depends on how fast it was flying over the previous 10 minutes, what fundamental mathematical assumption is violated?<br>

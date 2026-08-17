@@ -37,6 +37,9 @@ parts:
     - file: lessons/11/mdp.md
       sections:
       - file: lessons/11/mdp_nb.ipynb
+    - file: lessons/12/mdp_2.md
+      sections:
+      - file: lessons/12/mdp_nb_2.ipynb
     - file: lessons/26/mlfoundations.md
       sections:
       - file: lessons/26/evaluating_performance.ipynb
@@ -103,6 +106,7 @@ parts:
     - file: exercises/L07.md
     - file: exercises/L08.md
     - file: exercises/L11.md
+    - file: exercises/L12.md
     - file: exercises/L26.md
     - file: exercises/L27.md
     - file: exercises/L28.md

@@ -29,19 +29,12 @@ While L1 is primarily conceptual, the evaluation of an agent's performance relie
 | $w_t$ | The next predicted word (or token) at time step $t$. |
 | $P(w_t \mid w_1, \dots, w_{t-1})$ | The mathematical probability that a specific word $w_t$ comes next, given the entire sequence of previous words in the context window. |
 
-## L4: Problem Formulation
-### Search Algorithm Properties
-| Notation | Definition |
-| --- | --- | 
-| $b$ | Branching Factor: The average number of successor options available to an agent from any given node in a search tree. |
-| $m$ | Maximum Depth: The maximum depth of the search tree (number of steps from the root to the deepest possible state). |
-| $O(b^m)$ | Time Complexity: The Big-O mathematical representation of the total number of nodes in the entire search tree. |
-| $O(bm)$ | Space Complexity (DFS): The memory required by Depth-First Search, as it only stores the current path (siblings up to the root) in its fringe. |
-
 ## L5: Uninformed Search
 ### Space and Time Complexity
 | Notation | Definition |
 | --- | --- | 
+| $b$ | Branching Factor: The average number of successor options available to an agent from any given node in a search tree. |
+| $m$ | Maximum Depth: The maximum depth of the search tree (number of steps from the root to the deepest possible state). |
 | $s$ | Shallowest Solution Depth: The depth level of the shallowest goal state in the search tree. Used in BFS calculations. |
 | $C^*$ | Optimal Cost: The total mathematical cost of the absolutely cheapest path to the goal. Used in UCS calculations. |
 | $\epsilon$ | Minimum Arc Cost: The smallest possible cost of making a single move/action in the environment. UCS relies on this being greater than 0. |
@@ -59,6 +52,34 @@ While L1 is primarily conceptual, the evaluation of an agent's performance relie
 | $h^*(n)$ | The true, exact cost from the current node $n$ to the goal. |
 | $\text{cost}(A \to C)$ |  The exact step cost of traveling directly from node A to neighboring node C. |
 | $\max(h_a, h_b)$ | A method of creating a superior heuristic by taking the maximum value of two admissible heuristics at every node. |
+
+## L11: Markov Decision Process I
+### MDP Parameters
+| Notation | Definition |
+| --- | --- |
+| $S$ | The set of all possible states in the environment. |
+| $A$ | The set of all available actions the agent can take. |
+| $s$ | The current state the agent occupies. |
+| $s'$ | The resulting successor state after an action is taken. |
+| $P(s' \mid s,a)$ | The Transition Function (also written as $T(s,a,s')$). The exact probability of arriving in state $s'$ given that the agent took action $a$ in state $s$. |
+| $R(s,a,s')$ | The Reward Function. The immediate numerical reward (or penalty) received after making the transition from $s$ to $s'$. |\
+| $\gamma$ | The Discount Factor (Gamma). A multiplier between 0 and 1 used to exponentially decay the value of future rewards. |
+| $\pi^*$ | The Optimal Policy. The mathematically proven best action to take in every single state to maximize long-term expected reward. |
+| $U([r_0, r_1, \dots])$ | The total discounted utility calculated over a sequence of rewards. Evaluated as $r_0 + \gamma r_1 + \gamma^2 r_2 \dots$ |
+
+## L12: Markov Decision Process II
+### MDP (Part 2)**
+| Notation | Definition |
+| --- | --- |
+| $\pi(s)$ | A policy mapping state $s$ to an action $a$. |
+| $\pi(a\vert{}s)$ | A stochastic policy representing the probability of taking action $a$ given state $s$. |
+| $G_t$ | The expected discounted return starting from time step $t$. |
+| $V^\pi(s)$ | The State-Value Function for state $s$ under policy $\pi$. |
+| $Q^\pi(s, a)$ | The Action-Value (Q-Value) Function for taking action $a$ in state $s$ under policy $\pi$. |
+| $V^*(s)$ | The optimal State-Value Function. |
+| $Q^*(s, a)$ | The optimal Action-Value Function. |
+| $\pi^*$ | The absolute optimal policy for a given MDP. |
+
 
 ## L27: ML Foundations
 ### Confusion Matrix
