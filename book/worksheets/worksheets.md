@@ -1,8 +1,16 @@
 
-# In-class Worksheets
+# Slides & In-class Worksheets
+
+<a href="https://github.com/USAFADFCS/CS471_Intro_to_AI/tree/main/slides/" target="_blank" rel="noopener noreferrer">
+    <button class="btn btn-primary">Link to Lecture Slides</button>
+</a>
+
+
+---
+
 
 * <a href="4_worksheet.pdf" target="_blank" rel="noopener noreferrer">
-    <button class="btn btn-primary">Lesson 4: Problem Formulation</button>
+    <button class="btn btn-primary">Download: Lesson 4 - Problem Formulation Worksheet Solutions</button>
 </a>
 
 <!--
