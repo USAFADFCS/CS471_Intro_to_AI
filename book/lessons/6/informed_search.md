@@ -47,8 +47,7 @@ graph LR
 ## A* Search: Balancing Cost and Estimation
 {term}`A* Search` (pronounced "A-Star") fixes the vulnerability of Greedy Search by balancing the past and the future. It considers both the exact cost incurred so far ($g(n)$) and the estimated cost to the target ($h(n)$).
 
-**Evaluation Function:**
-$$ f(n) = g(n) + h(n) $$
+**Evaluation Function:** $f(n) = g(n) + h(n)$
 
 If the heuristic is an {term}`Admissible Heuristic` (meaning it never overestimates the true cost), A* is mathematically guaranteed to find the optimal, lowest-cost path.
 
