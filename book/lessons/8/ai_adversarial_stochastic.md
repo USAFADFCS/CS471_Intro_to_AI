@@ -17,16 +17,16 @@ We must account for two complex realities:
 1. **Adversarial Environments:** A rational enemy is actively trying to defeat the agent. 
 2. **Stochastic Environments:** The environment is subject to random, probabilistic forces (like weather or sensor noise) where outcomes are not guaranteed.
 
-Games and complex tactical scenarios can be categorized across several axes: whether they are deterministic or stochastic, whether they involve one, two, or multiple players, and whether they are zero-sum or general [cite: 6].
+Games and complex tactical scenarios can be categorized across several axes: whether they are deterministic or stochastic, whether they involve one, two, or multiple players, and whether they are zero-sum or general .
 
 ## The Dynamics of Adversarial Systems
 
 ### Zero-Sum vs General Games
-When operating against a rational opponent, we often model the interaction as a {term}`Zero-Sum Game`. In a strictly zero-sum scenario, resources or advantages are finite—meaning any tactical gain for your agent (MAX) results in an exact, mathematically equivalent loss for the adversary (MIN). This creates an environment of pure competition [cite: 6]. 
+When operating against a rational opponent, we often model the interaction as a {term}`Zero-Sum Game`. In a strictly zero-sum scenario, resources or advantages are finite—meaning any tactical gain for your agent (MAX) results in an exact, mathematically equivalent loss for the adversary (MIN). This creates an environment of pure competition . 
 
 If the utility function of a given state for MAX is $U(s)$, then the utility for MIN is strictly $-U(s)$. Because their goals are diametrically opposed, the agents cannot collaborate. 
 
-We can contrast this with *General Games*, where agents evaluate outcomes based on independent utilities [cite: 6]. In general games, a gain for MAX does not automatically equal a loss for MIN, which makes cooperation or indifference possible [cite: 6].
+We can contrast this with *General Games*, where agents evaluate outcomes based on independent utilities . In general games, a gain for MAX does not automatically equal a loss for MIN, which makes cooperation or indifference possible .
 
 ### Turn-Taking and Follow-On Effects
 Unlike static pathfinding where an agent executes a sequence of moves uninterrupted, adversarial systems involve **sequential turn-taking**. 
@@ -39,7 +39,7 @@ When operating against a rational opponent in a zero-sum scenario, we use {term}
 
 In a Minimax tree, the primary agent is **MAX** (Blue Force). MAX wants to select actions that yield the highest possible tactical advantage score. The opponent is **MIN** (Red Force). MIN wants to select actions that result in the lowest possible score for MAX.
 
-The algorithm explores the state space down to the terminal nodes (the final outcomes), and then mathematically backs up those values to the root, assuming both agents play perfectly. The value of any given state is defined as the best achievable outcome from that state [cite: 6].
+The algorithm explores the state space down to the terminal nodes (the final outcomes), and then mathematically backs up those values to the root, assuming both agents play perfectly. The value of any given state is defined as the best achievable outcome from that state .
 
 ### Minimax Tree Traversal
 
@@ -72,29 +72,29 @@ graph TD
 * The values 5 and 7 are backed up to the MAX root.
 * MAX must choose between the left path (yielding 5) and the right path (yielding 7). MAX chooses Right (7).
 
-Minimax is guaranteed to be optimal against a perfect player [cite: 6]. Notice that MAX did not get the highest overall board value (20) because a perfectly rational MIN opponent would never allow MAX to reach it.
+Minimax is guaranteed to be optimal against a perfect player . Notice that MAX did not get the highest overall board value (20) because a perfectly rational MIN opponent would never allow MAX to reach it.
 
 ## Efficiency and Resource Limits
 
-Just like exhaustive Depth-First Search, Minimax operates with a time complexity of $O(b^m)$ and a space complexity of $O(bm)$ [cite: 6]. In realistic, complex tactical environments, finding an exact solution by searching all the way down to terminal states is completely infeasible [cite: 6]. For example, in chess, the branching factor ($b$) is approximately 35, and the depth ($m$) is around 100 [cite: 6].
+Just like exhaustive Depth-First Search, Minimax operates with a time complexity of $O(b^m)$ and a space complexity of $O(bm)$ . In realistic, complex tactical environments, finding an exact solution by searching all the way down to terminal states is completely infeasible . For example, in chess, the branching factor ($b$) is approximately 35, and the depth ($m$) is around 100 .
 
 ### Depth-Limited Search and Evaluation Functions
-Because agents face rigid resource limits, they cannot search to the leaves of the tree [cite: 6]. The solution is {term}`Depth-Limited Search` [cite: 6]. Instead of exploring until the end of the game, the algorithm stops at a specific depth and replaces terminal utilities with an **Evaluation Function** for the non-terminal positions [cite: 6]. 
+Because agents face rigid resource limits, they cannot search to the leaves of the tree . The solution is {term}`Depth-Limited Search` . Instead of exploring until the end of the game, the algorithm stops at a specific depth and replaces terminal utilities with an **Evaluation Function** for the non-terminal positions . 
 
-Evaluation functions attempt to score these non-terminal states, but they are inherently imperfect [cite: 6]. Typically, they are calculated as a weighted linear sum of features [cite: 6]:
+Evaluation functions attempt to score these non-terminal states, but they are inherently imperfect . Typically, they are calculated as a weighted linear sum of features :
 
 $$ Eval(s) = w_1 f_1(s) + w_2 f_2(s) + \dots + w_n f_n(s) $$
 
-When designing these systems, there is a fundamental tradeoff between the complexity of the features and the complexity of computation [cite: 6]. Fortunately, depth matters: the deeper in the tree the evaluation function is applied, the less the absolute quality of the evaluation function matters to the final root decision [cite: 6].
+When designing these systems, there is a fundamental tradeoff between the complexity of the features and the complexity of computation . Fortunately, depth matters: the deeper in the tree the evaluation function is applied, the less the absolute quality of the evaluation function matters to the final root decision .
 
 ### Game Tree Pruning
-To squeeze more depth out of limited resources, AI agents utilize **Minimax Pruning** (such as Alpha-Beta pruning) [cite: 6]. Pruning safely discards branches of the game tree that are mathematically proven to have no impact on the final decision [cite: 6]. For example, if a MAX node has already discovered a path that guarantees a score of 2, it will stop evaluating any alternative MIN branch as soon as it sees an outcome less than 2, knowing MIN would force a worse outcome [cite: 6].
+To squeeze more depth out of limited resources, AI agents utilize **Minimax Pruning** (such as Alpha-Beta pruning) . Pruning safely discards branches of the game tree that are mathematically proven to have no impact on the final decision . For example, if a MAX node has already discovered a path that guarantees a score of 2, it will stop evaluating any alternative MIN branch as soon as it sees an outcome less than 2, knowing MIN would force a worse outcome .
 
 ## From Plans to Policies
 
-In deterministic games, a formal solution for a player is known as a policy ($S \rightarrow A$) [cite: 6]. Unlike uninformed and informed search algorithms (like A*) which output a rigid **Plan** (a fixed sequence of actions), adversarial search requires a {term}`Policy` (denoted mathematically as $\pi$). 
+In deterministic games, a formal solution for a player is known as a policy ($S \rightarrow A$) . Unlike uninformed and informed search algorithms (like A*) which output a rigid **Plan** (a fixed sequence of actions), adversarial search requires a {term}`Policy` (denoted mathematically as $\pi$). 
 
-A policy is a comprehensive mapping from *every possible state* to a recommended action [cite: 6]. It acts as a massive contingency manual: 
+A policy is a comprehensive mapping from *every possible state* to a recommended action . It acts as a massive contingency manual: 
 * "If the enemy moves Left, I do X."
 * "If the enemy moves Right, I do Y."
     
