@@ -80,6 +80,17 @@ While L1 is primarily conceptual, the evaluation of an agent's performance relie
 | $Q^*(s, a)$ | The optimal Action-Value Function. |
 | $\pi^*$ | The absolute optimal policy for a given MDP. |
 
+## L18: Probability (Uncertainty, Conditioning, and Independence))
+### Probability & Uncertainty**
+| Notation | Definition |
+| --- | --- |
+| P(A)$ | Unconditional (prior) probability of event or proposition $A$. |
+| $P(A, B)$ or $P(A \cap B)$ | Joint probability of events $A$ and $B$ occurring simultaneously. |
+| $P(A \mid B)$ | Conditional probability of event $A$ given that event $B$ has occurred. |
+| $P(A \mid B, C)$ | Conditional probability of event $A$ given that both events $B$ and $C$ have occurred. |
+| $\sum_b P(A, B=b)$ | Marginalization (summing out variable $B$ to compute marginal probability $P(A)$). |
+| $A \perp B$ | Event $A$ is statistically independent of event $B$. |
+| $A \perp B \mid C$ | Event $A$ is conditionally independent of event $B$ given the observation of event $C$. |
 
 ## L27: ML Foundations
 ### Confusion Matrix

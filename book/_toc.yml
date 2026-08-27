@@ -49,6 +49,9 @@ parts:
     - file: lessons/15/Q_learning.md
       sections:
       - file: lessons/15/Q_learning_nb.ipynb
+    - file: lessons/18/probability.md
+      sections:
+      - file: lessons/18/probability_nb.ipynb
 
     - file: lessons/26/mlfoundations.md
       sections:
@@ -120,6 +123,7 @@ parts:
     - file: exercises/L13.md
     - file: exercises/L14.md
     - file: exercises/L15.md
+    - file: exercises/L18.md
     - file: exercises/L26.md
     - file: exercises/L27.md
     - file: exercises/L28.md
