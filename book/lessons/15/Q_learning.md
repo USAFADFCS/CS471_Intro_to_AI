@@ -30,7 +30,7 @@ To learn effectively, the agent must balance:
 *   **Exploration:** Trying unknown actions to gather intelligence. A common method is $\epsilon$-greedy, where the agent acts randomly with a small probability $\epsilon$.
 *   **Exploitation:** Utilizing known information to maximize rewards.
 
-```mermaid
+```{mermaid}
 graph LR
     S((Base)) -- "Deploy UAV" --> A((Waypoint Alpha))
     A -- "Safe Route" --> B((Target))
@@ -39,3 +39,4 @@ graph LR
     classDef default fill:#f9f9f9,stroke:#888,stroke-width:2px,color:#000;
     classDef highlight fill:#d4edda,stroke:#28a745,stroke-width:2px,color:#000;
     linkStyle default stroke:#a0a0a0,stroke-width:2px;
+```
