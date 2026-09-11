@@ -99,23 +99,25 @@ However, given that we *already know* the tank engine is running ($T = \text{Tan
 
 ## Knowledge Check & Practice Questions
 
-**1. An autonomous cyber-defense agent monitors incoming packet streams. If the probability of a Distributed Denial of Service (DDoS) attack occurring is $P(\text{DDoS}) = 0.05$, and the probability of a network switch crashing given an active DDoS attack is $P(\text{SwitchCrash} \mid \text{DDoS}) = 0.80$, what is the joint probability $P(\text{DDoS}, \text{SwitchCrash})$?**
+1. An autonomous cyber-defense agent monitors incoming packet streams. If the probability of a Distributed Denial of Service (DDoS) attack occurring is $P(\text{DDoS}) = 0.05$, and the probability of a network switch crashing given an active DDoS attack is $P(\text{SwitchCrash} \mid \text{DDoS}) = 0.80$, what is the joint probability $P(\text{DDoS}, \text{SwitchCrash})$?<br>
+<br>
+A) 0.85<br>
+B) 0.04<br>
+C) 0.16<br>
+D) 0.004<br>
+<br>
+2. An Electronic Warfare (EW) surveillance system notes that jamming on Radar A and jamming on Radar B are dependent. However, once the AI confirms that an adversary EW Aircraft is active in the sector, knowing the state of Radar A provides no additional information about Radar B. What mathematical property describes this relationship?<br>
+<br>
+A) Marginalization<br>
+B) Statistical Absolute Independence<br>
+C) Conditional Independence<br>
+D) Deterministic Search Equivalence<br>
+<br>
 
-- A) 0.85
-- B) 0.04
-- C) 0.16
-- D) 0.004
-
-**2. An Electronic Warfare (EW) surveillance system notes that jamming on Radar A and jamming on Radar B are dependent. However, once the AI confirms that an adversary EW Aircraft is active in the sector, knowing the state of Radar A provides no additional information about Radar B. What mathematical property describes this relationship?**
-
-- A) Marginalization
-- B) Statistical Absolute Independence
-- C) Conditional Independence
-- D) Deterministic Search Equivalence
-
-**3. An intelligence database contains the following joint distribution for terrain trafficability ($T \in \{\text{Passable}, \text{Impassable}\}$) and adversary minefield presence ($M \in \{\text{Mined}, \text{Clear}\}$): $P(\text{Passable}, \text{Mined}) = 0.08$, $P(\text{Passable}, \text{Clear}) = 0.72$, $P(\text{Impassable}, \text{Mined}) = 0.12$, and $P(\text{Impassable}, \text{Clear}) = 0.08$. What is the marginal probability that the terrain is Passable ($P(\text{Passable})$)?**
-
-- A) 0.80
-- B) 0.72
-- C) 0.20
-- D) 0.08
+3. An intelligence database contains the following joint distribution for terrain trafficability ($T \in \{\text{Passable}, \text{Impassable}\}$) and adversary minefield presence ($M \in \{\text{Mined}, \text{Clear}\}$): $P(\text{Passable}, \text{Mined}) = 0.08$, $P(\text{Passable}, \text{Clear}) = 0.72$, $P(\text{Impassable}, \text{Mined}) = 0.12$, and $P(\tex<br>t{Impassable}, \text{Clear}) = 0.08$. What is the marginal probability that the terrain is Passable ($P(\text{Passable})$)?
+3. An intelligence database contains the following joint distribution for terrain trafficability ($T \in \{\text{Passable}, \text{Impassable}\}$) and adversary minefield presence ($M \in \{\text{Mined}, \text{Clear}\}$): $P(\text{Passable}, \text{Mined}) = 0.08$, $P(\text{Passable}, \text{Clear}) = 0.72$, $P(\text{Impassable}, \text{Mined}) = 0.12$, and $P(\text{Impassable}, \text{Clear}) = 0.08$. What is the marginal probability that the terrain is Passable ($P(\text{Passable})$)?
+<br>
+A) 0.80<br>
+B) 0.72<br>
+C) 0.20<br>
+D) 0.08<br>

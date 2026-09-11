@@ -52,6 +52,9 @@ parts:
     - file: lessons/18/probability.md
       sections:
       - file: lessons/18/probability_nb.ipynb
+    - file: lessons/19/bayes.md
+      sections:
+      - file: lessons/19/bayes_nb.ipynb
 
     - file: lessons/26/mlfoundations.md
       sections:
@@ -124,6 +127,7 @@ parts:
     - file: exercises/L14.md
     - file: exercises/L15.md
     - file: exercises/L18.md
+    - file: exercises/L19.md
     - file: exercises/L26.md
     - file: exercises/L27.md
     - file: exercises/L28.md

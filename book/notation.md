@@ -92,6 +92,16 @@ While L1 is primarily conceptual, the evaluation of an agent's performance relie
 | $A \perp B$ | Event $A$ is statistically independent of event $B$. |
 | $A \perp B \mid C$ | Event $A$ is conditionally independent of event $B$ given the observation of event $C$. |
 
+## L19: Bayes' Rule
+### Probability & Bayes' Rule**
+| Notation | Definition |
+| --- | --- |
+| $P(A)$| Prior probability of hypothesis $A$.|
+| $P(A, B)$| Joint probability of events $A$ and $B$.|
+| $P(B \mid A)$| Likelihood of observing evidence $B$ given that hypothesis $A$ is true.|
+| $P(A \mid B)$| Posterior probability of hypothesis $A$ given evidence $B$.|
+| $P(A \mid B) = \frac{P(B \mid A)P(A)}{P(B)}$| Bayes' Rule formulation.|
+
 ## L27: ML Foundations
 ### Confusion Matrix
 | Notation | Definition |

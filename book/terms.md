@@ -4,7 +4,6 @@
 This glossary defines the foundational concepts introduced across the machine learning and artificial intelligence lessons.
 
 ```{glossary}
-
 1D-Convolutional Neural Network (1D-CNN)
     A deep learning architecture highly specialized for processing one-dimensional sequence data, such as raw time-series radio frequency (RF) signals in Electronic Warfare.
 
@@ -64,6 +63,12 @@ Bagging (Bootstrap Aggregating)
 
 Base Model
     A foundational Large Language Model that has completed pre-training but has not yet undergone instruct-tuning. It excels at predicting the next word and understanding language, but cannot reliably follow commands or act as an assistant.
+
+Base Rate
+    The underlying, prior probability of an event or condition occurring in a given population or environment before any specific new evidence is considered.
+
+Bayes' Rule
+    A mathematical theorem describing how to update the probability of a hypothesis based on new evidence, relating the posterior probability to the prior probability, likelihood, and marginal likelihood.
 
 Bias (Neural Networks)
     A learnable constant ($b$) added to a neuron's weighted sum. It acts as a baseline threshold, shifting the activation function left or right so the neuron can fire even if all input features are zero.
@@ -303,7 +308,7 @@ LIFO (Last-In, First-Out) Stack
     A data structure where the most recently added item is the first one removed. It is used to manage the frontier in Depth-First Search, causing the algorithm to plunge as deeply as possible down a single path.
 
 Likelihood
-    In Bayes' Theorem, the probability of observing a specific piece of evidence assuming that a particular class is true.
+    In Bayes' Theorem, the probability of observing a specific piece of evidence assuming that a particular hypothesis is true.
 
 Logistic Regression
     A foundational classification algorithm that passes a linear equation through a {term}`Sigmoid Function` to predict the probability of a binary outcome.
@@ -368,8 +373,8 @@ Policy (MDP)
 Positional Encoding
     A mathematical mechanism in Transformers that tags every input token with a unique signature indicating its exact order in the sentence, allowing the model to process all words in parallel without losing sequential context.
 
-Posterior
-    In Bayes' Theorem, the final, updated probability of a class being true *after* factoring in the new evidence.
+Posterior Probability
+    In Bayes' Theorem, the final, updated probability of a hypothesis being true *after* factoring in the new evidence.
 
 Precision
     An operational metric answering: "Out of all the times the model predicted a positive target, how many were actually correct?" Calculated as TP / (TP + FP).
@@ -383,8 +388,8 @@ Preprocessing
 Pre-Training
     The initial, massive training phase of an LLM where it ingests vast amounts of unstructured internet text and plays a continuous game of "predict the next word" to learn grammar, facts, and logic.
 
-Prior
-    In Bayes' Theorem, the baseline, historical probability of a class occurring *before* any new evidence is observed.
+Prior Probability
+    In Bayes' Theorem, the baseline, historical probability of a hypothesis occurring *before* any new evidence is observed.
 
 Priority Queue
     A data structure that manages nodes based on a specific numerical priority rather than the order they were inserted. In Uniform Cost Search, nodes are prioritized strictly by the lowest cumulative path cost.
