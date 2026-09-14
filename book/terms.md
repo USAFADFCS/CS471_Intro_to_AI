@@ -43,6 +43,9 @@ Agentic AI
 Algorithmic Bias
     A failure mode where an AI system produces systematically prejudiced or skewed results, usually caused by imbalanced, incomplete, or historically biased training data.
 
+Ancestor (Bayesian Network)
+    In a Bayesian network graph, any node along an upstream directed path that leads to a given target node. If directed edges connect $A \to B \to C$, then $A$ is an ancestor of both $B$ and $C$.
+
 API (Application Programming Interface)
     A set of protocols that allows different software applications to communicate. In AI, APIs are used to send data (like raw text) to powerful cloud-hosted models (like LLMs) and securely receive the processed output.
 
@@ -70,6 +73,9 @@ Base Rate
 Bayes' Rule
     A mathematical theorem describing how to update the probability of a hypothesis based on new evidence, relating the posterior probability to the prior probability, likelihood, and marginal likelihood.
 
+Bayesian Network
+    A probabilistic graphical model that represents a set of random variables and their conditional dependencies via a directed acyclic graph (DAG). It decomposes a full joint probability distribution into local conditional probability distributions.
+
 Bias (Neural Networks)
     A learnable constant ($b$) added to a neuron's weighted sum. It acts as a baseline threshold, shifting the activation function left or right so the neuron can fire even if all input features are zero.
 
@@ -88,6 +94,9 @@ Breadth-First Search (BFS)
 Cascading Hallucination
     A failure mode unique to multi-agent systems where one agent hallucinates a fact or capability, and other agents subsequently accept that hallucination as truth, rapidly derailing the entire workflow or simulation.
 
+Child (Bayesian Network)
+    In a directed graph, a node that has an incoming directed edge pointing to it from another node (its parent). If $A \to B$, then $B$ is the child of $A$.
+
 Completeness
     A property of an AI search algorithm that indicates whether the algorithm is mathematically guaranteed to eventually find a solution if one exists within the state space.
 
@@ -96,6 +105,9 @@ Conditional Independence
 
 Conditional Probability
     The mathematical probability of an event $A$ occurring given that another conditioning event $B$ is already known to have occurred, defined as $P(A \mid B) = \frac{P(A, B)}{P(B)}$ (where $P(B) > 0$).
+
+Conditional Probability Table (CPT)
+    A table associated with a node in a discrete Bayesian network that specifies the conditional probability distribution of that node given every possible combination of values taken by its parent nodes.
 
 Confusion Matrix
     A performance measurement table that visualizes exactly how a classification model succeeds or fails, categorizing predictions into True Positives, True Negatives, False Positives, and False Negatives. Crucial for weighing operational risks.
@@ -133,8 +145,14 @@ Deep Learning
 Depth-Limited Search
     A variation of Depth-First Search that imposes a strict maximum depth limit to prevent the algorithm from plunging down infinite paths, forcing it to backtrack once the limit is reached.
 
+Descendant (Bayesian Network)
+    In a directed graph, any node that can be reached from a given node by following a path of directed edges downstream.
+
 Deterministic Policy
     A policy that maps each specific state to exactly one single, definitive action.
+
+Directed Acyclic Graph (DAG)
+    A finite directed graph containing vertices and directed edges that has no directed cycles. That is, starting at any vertex and following the directed edges, one can never loop back to the same vertex.
 
 Discount Factor
     A mathematical multiplier ($\gamma$) bounded between 0 and 1 used in reinforcement learning and MDPs to value near-term rewards more heavily than distant future rewards, ensuring that infinite operational loops converge to a finite mathematical value.
@@ -341,7 +359,7 @@ Naive Assumption (Independence Assumption)
     The core (and mathematically flawed) assumption in Naive Bayes that every feature in a dataset is completely independent of every other feature.
 
 Node
-    A discrete point or data structure. In a state space graph, it represents a single physical configuration. In a search tree, it represents an entire path or plan taken from the start state.
+    A discrete point or data structure. In a state space graph, it represents a single physical configuration. In a search tree, it represents an entire path or plan taken from the start state. In a Bayesian network, it represents a random variable.
 
 Observation (ReAct)
     The step in the ReAct loop where the result of an external tool call is returned and injected back into the agent's context window, allowing the agent to evaluate the outcome of its action.
@@ -357,6 +375,9 @@ Overfitting
 
 Padding (Zero-Padding)
     The technique of adding a border of zero-value pixels around the edges of an input image before applying a convolution. This prevents the resulting feature map from shrinking and preserves edge information.
+
+Parent (Bayesian Network)
+    In a Bayesian network graph, a node that has an outgoing directed edge directly pointing to another node (its child). If $A \to B$, then $A$ is an immediate parent of $B$.
 
 Path Cost
     A numerical value used in search problems to compare the effects (e.g., fuel, time, risk) of different possible sequences of actions.

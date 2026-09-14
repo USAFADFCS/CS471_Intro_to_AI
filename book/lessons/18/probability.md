@@ -1,4 +1,4 @@
-# Lesson 18: Probability (Uncertainty, Conditioning, and Independence)
+# L18: Probability (Uncertainty, Conditioning, and Independence)
 
 :::{admonition} Lesson Objectives
 :class: note

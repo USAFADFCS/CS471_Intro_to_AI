@@ -102,6 +102,16 @@ While L1 is primarily conceptual, the evaluation of an agent's performance relie
 | $P(A \mid B)$| Posterior probability of hypothesis $A$ given evidence $B$.|
 | $P(A \mid B) = \frac{P(B \mid A)P(A)}{P(B)}$| Bayes' Rule formulation.|
 
+## L20: Bayesian Networks & Graphical Models
+| $\mathcal{G} = (V, E)$ | A directed acyclic graph with a set of vertices (nodes) $V$ and directed edges $E$. |
+| $X_i \in V$ | A random variable represented as a node in the graph. |
+| $Parents(X_i)$ or $Pa(X_i)$ | The set of immediate parent nodes of $X_i$ with edges directed into $X_i$. |
+| $Children(X_i)$ | The set of immediate child nodes of $X_i$ with edges directed out of $X_i$. |
+| $Ancestors(X_i)$ | The set of all nodes from which a directed path leads to $X_i$. |
+| $Descendants(X_i)$ | The set of all nodes reachable from $X_i$ along a directed path. |
+| $P(X_1, X_2, \dots, X_n) = \prod_{i=1}^n P(X_i \mid Parents(X_i))$ | The chain rule decomposition of the joint probability distribution over a Bayesian network. |
+| $X \perp Y \mid Z$ | Variable $X$ is conditionally independent of variable $Y$ given variable $Z$. |
+
 ## L27: ML Foundations
 ### Confusion Matrix
 | Notation | Definition |

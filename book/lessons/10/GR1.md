@@ -1,2 +1,1 @@
-## Graded Review #1
-Good luck!
+# 📝 L10: GR 1

@@ -34,6 +34,7 @@ parts:
       sections:
       - file: lessons/8/ai_adversarial_stochastic_nb.ipynb
     - file: lessons/9/workshop_review.md
+    - file: lessons/10/GR1.md
     - file: lessons/11/mdp.md
       sections:
       - file: lessons/11/mdp_nb.ipynb
@@ -49,13 +50,17 @@ parts:
     - file: lessons/15/Q_learning.md
       sections:
       - file: lessons/15/Q_learning_nb.ipynb
+    - file: lessons/16/workshop_review.md
+    - file: lessons/17/GR2.md
     - file: lessons/18/probability.md
       sections:
       - file: lessons/18/probability_nb.ipynb
     - file: lessons/19/bayes.md
       sections:
       - file: lessons/19/bayes_nb.ipynb
-
+    - file: lessons/20/bayesian_networks.md
+      sections:
+      - file: lessons/20/bayesian_networks_nb.ipynb
     - file: lessons/26/mlfoundations.md
       sections:
       - file: lessons/26/evaluating_performance.ipynb

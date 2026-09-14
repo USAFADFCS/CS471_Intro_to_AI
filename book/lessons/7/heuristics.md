@@ -1,4 +1,4 @@
-# L7: Heuristics (Admissibility & Consistency)
+# ☑️ L7: Heuristics (Admissibility & Consistency) 
 
 :::{admonition} Lesson Objectives
 :class: note

@@ -1,4 +1,4 @@
-# Lesson 13 — Reinforcement Learning I (Value Iteration)
+# ☑️ L13 — Reinforcement Learning I (Value Iteration)
 
 :::{admonition} Lesson Objectives
 :class: note

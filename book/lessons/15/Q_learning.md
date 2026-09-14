@@ -1,4 +1,4 @@
-# Lesson 15 - Reinforcement Learning III (Q-Learning)
+# L15 - Reinforcement Learning III (Q-Learning)
 
 :::{admonition} Lesson Objectives
 :class: note
