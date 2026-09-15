@@ -61,6 +61,9 @@ parts:
     - file: lessons/20/bayesian_networks.md
       sections:
       - file: lessons/20/bayesian_networks_nb.ipynb
+    - file: lessons/21/bayesian_inference.md
+      sections:
+      - file: lessons/21/bayesian_inference_nb.ipynb
     - file: lessons/26/mlfoundations.md
       sections:
       - file: lessons/26/evaluating_performance.ipynb
@@ -133,6 +136,8 @@ parts:
     - file: exercises/L15.md
     - file: exercises/L18.md
     - file: exercises/L19.md
+    - file: exercises/L20.md
+    - file: exercises/L21.md
     - file: exercises/L26.md
     - file: exercises/L27.md
     - file: exercises/L28.md

@@ -94,6 +94,9 @@ Breadth-First Search (BFS)
 Cascading Hallucination
     A failure mode unique to multi-agent systems where one agent hallucinates a fact or capability, and other agents subsequently accept that hallucination as truth, rapidly derailing the entire workflow or simulation.
 
+Causal Inference
+    A form of probabilistic inference where an agent reasons forward from observed upstream causes to predict downstream effects, symptoms, or mission outcomes ($P(\text{Effect} \mid \text{Cause})$).
+
 Child (Bayesian Network)
     In a directed graph, a node that has an incoming directed edge pointing to it from another node (its parent). If $A \to B$, then $B$ is the child of $A$.
 
@@ -151,11 +154,14 @@ Descendant (Bayesian Network)
 Deterministic Policy
     A policy that maps each specific state to exactly one single, definitive action.
 
-Directed Acyclic Graph (DAG)
-    A finite directed graph containing vertices and directed edges that has no directed cycles. That is, starting at any vertex and following the directed edges, one can never loop back to the same vertex.
+Diagnostic Inference
+    A form of probabilistic inference where an agent reasons backward from observed downstream symptoms or sensor reports to infer the probability of unobserved upstream root causes ($P(\text{Cause} \mid \text{Effect})$).
 
 Discount Factor
     A mathematical multiplier ($\gamma$) bounded between 0 and 1 used in reinforcement learning and MDPs to value near-term rewards more heavily than distant future rewards, ensuring that infinite operational loops converge to a finite mathematical value.
+
+Directed Acyclic Graph (DAG)
+    A finite directed graph containing vertices and directed edges that has no directed cycles. That is, starting at any vertex and following the directed edges, one can never loop back to the same vertex.
 
 Document Chunking
     The strategy of splitting massive text documents into smaller, overlapping segments (chunks) so they can be individually embedded, searched, and fit within an LLM's limited context window.
@@ -177,6 +183,9 @@ Encoder
 
 Epoch
     One complete pass of the entire training dataset through the neural network during the training phase.
+
+Evidence Variable
+    A random variable in a Bayesian network whose exact outcome has been observed or measured (e.g., $E = e$), serving as the condition upon which posterior beliefs are updated.
 
 Expected Return ($G$)
     The cumulative sum of all discounted future rewards an agent expects to accumulate starting from a given time step.
@@ -271,6 +280,9 @@ Heuristic
 Hidden Layer
     A layer of artificial neurons situated between the input and output layers of a neural network. These layers are responsible for learning abstract, hidden features in the data.
 
+Hidden Variable
+    An unobserved variable in a probabilistic model that is neither queried nor directly instantiated as evidence, requiring its values to be summed out (marginalized) during inference.
+
 Hierarchical Feature Learning
     The process by which deep neural networks autonomously learn simple concepts (like lines and edges) in early layers and mathematically combine them into complex tactical concepts (like vehicles or radar structures) in deeper layers.
 
@@ -282,6 +294,9 @@ Independence (Statistical Independence)
 
 Inference
     The phase in an AI pipeline where a trained model or logic system applies its learned rules to new, unseen data to generate a prediction or decision.
+
+Inference by Enumeration
+    An exact algorithm for computing the posterior distribution over query variables in a Bayesian network by summing terms over all possible combinations of hidden variables using the network's factored joint distribution.
 
 Inference Latency
     The time it takes for a deployed neural network to process a single input (like a video frame) and output a prediction. Critical for autonomous edge devices tracking fast-moving targets.
@@ -361,6 +376,9 @@ Naive Assumption (Independence Assumption)
 Node
     A discrete point or data structure. In a state space graph, it represents a single physical configuration. In a search tree, it represents an entire path or plan taken from the start state. In a Bayesian network, it represents a random variable.
 
+Normalization Constant
+    A scalar multiplier $\alpha = \frac{1}{\sum_q P(Q=q, E=e)} = \frac{1}{P(E=e)}$ applied to an unnormalized joint distribution vector over query variable $Q$ to ensure the final posterior probabilities sum to exactly 1.0.
+
 Observation (ReAct)
     The step in the ReAct loop where the result of an external tool call is returned and injected back into the agent's context window, allowing the agent to evaluate the outcome of its action.
 
@@ -415,6 +433,9 @@ Prior Probability
 Priority Queue
     A data structure that manages nodes based on a specific numerical priority rather than the order they were inserted. In Uniform Cost Search, nodes are prioritized strictly by the lowest cumulative path cost.
 
+Probabilistic Inference
+    The process of calculating the posterior probability distribution over a set of query variables given observed evidence variables by evaluating a probabilistic model.
+
 Probability Distribution
     A mathematical function or table that assigns a probability to every possible mutually exclusive outcome or state in an entire sample space, such that all assigned probabilities are non-negative and sum to exactly 1.0.
 
@@ -426,6 +447,9 @@ Prompt Engineering
 
 Prompt Injection
     A failure mode or cyber attack where malicious input is designed to bypass an LLM's safety filters, causing it to ignore its original system instructions and execute an unauthorized command.
+
+Query Variable
+    The target random variable in a probabilistic model whose posterior probability distribution is to be calculated given observed evidence.
 
 Random Forest
     A powerful ensemble model that builds hundreds of shallow Decision Trees and averages their predictions to achieve high accuracy while avoiding the overfitting trap of single trees.

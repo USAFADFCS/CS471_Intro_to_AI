@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Signal & Strata: Minimax vs. Expectimax Lab</title>
+  <!-- Pyodide -->
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js"></script>
+  <!-- Monaco Editor Loader -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.39.0/min/vs/loader.min.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      display: flex;
+      gap: 10px;
+      padding: 10px;
+      background: #141414;
+      color: #ccc;
+      margin: 0;
+      height: 100vh;
+      overflow: hidden;
+    }
+    h3 { margin: 0 0 6px 0; color: #fff; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #333; padding-bottom: 5px; }
+    
+    .pane {
+      display: flex;
+      flex-direction: column;
+      background: #1e1e1e;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #333;
+    }
+    
+    /* Left Pane: Arena, Controls & Scoreboard */
+    .left-pane {
+      width: 390px;
+      flex-shrink: 0;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .left-pane::-webkit-scrollbar { width: 5px; }
+    .left-pane::-webkit-scrollbar-thumb { background: #444; border-radius: 3px; }
+
+    canvas { border: 2px solid #555; background: #0a0a0c; image-rendering: pixelated; border-radius: 4px; display: block; margin: 0 auto; }
+    
+    .legend { display: flex; justify-content: space-around; font-size: 10px; color: #aaa; }
+    .legend-item { display: flex; align-items: center; gap: 4px; }
+    .legend-icon { width: 10px; height: 10px; border-radius: 2px; }
+
+    .controls { display: flex; flex-direction: column; gap: 6px; }
+    .control-row { display: flex; gap: 5px; }
+    button, select {
+      padding: 6px 8px;
+      background: #0e639c;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: 500;
+    }
+    button:hover { background: #1177bb; }
+    button:disabled { background: #333; color: #666; cursor: not-allowed; }
+    .action-btn { background: #238636; }
+    .action-btn:hover { background: #2ea043; }
+    .turn-btn { background: #8957e5; font-weight: bold; }
+    .turn-btn:hover { background: #9e6bf5; }
+
+    .slider-container { display: flex; align-items: center; justify-content: space-between; font-size: 10px; color: #aaa; }
+    .slider-container input { width: 50%; cursor: pointer; }
+
+    /* Scoreboard & Telemetry Cards */
+    .telemetry-box { background: #181818; padding: 6px 8px; border-radius: 4px; border: 1px solid #2a2a2a; display: flex; flex-direction: column; gap: 4px; }
+    .telemetry-title { font-size: 10px; font-weight: bold; color: #888; text-transform: uppercase; }
+    .metric-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+    .metric-card { background: #222; padding: 5px 6px; border-radius: 3px; border: 1px solid #333; font-family: monospace; font-size: 10px; }
+    .metric-label { font-size: 9px; color: #888; text-transform: uppercase; }
+    .metric-val { font-size: 11px; font-weight: bold; color: #fff; margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    /* Rules Card */
+    .rules-box {
+      background: #181818;
+      padding: 8px 10px;
+      border-radius: 4px;
+      border: 1px solid #2a2a2a;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      font-size: 10px;
+      line-height: 1.4;
+      color: #aaa;
+    }
+    .rules-title {
+      font-size: 10px;
+      font-weight: bold;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 1px solid #333;
+      padding-bottom: 4px;
+    }
+    .rules-list {
+      margin: 0;
+      padding-left: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .rules-list li strong {
+      color: #ddd;
+    }
+    .rules-list ul {
+      margin: 2px 0 0 0;
+      padding-left: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    /* Middle Pane: Code Editor */
+    .middle-pane { flex: 1; min-width: 320px; display: flex; flex-direction: column; }
+    #editorContainer { flex-grow: 1; border: 1px solid #333; border-radius: 4px; overflow: hidden; }
+    .monaco-line-highlight { background: rgba(234, 179, 8, 0.25) !important; border-left: 4px solid #eab308; }
+
+    /* Right Pane: Tree Visualizer */
+    .right-pane { flex: 1.3; min-width: 400px; display: flex; flex-direction: column; }
+    .tree-toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; font-size: 11px; color: #aaa; }
+    .tree-legend { display: flex; gap: 8px; font-size: 10px; }
+    .tree-legend-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+    
+    #treeScrollArea {
+      flex-grow: 1;
+      background: #111;
+      border: 1px solid #333;
+      border-radius: 4px;
+      overflow: auto;
+      position: relative;
+    }
+    #treeSvg { min-width: 100%; min-height: 100%; display: block; }
+
+    /* SVG Tree Styling */
+    .edge { stroke: #4e5467; stroke-width: 1.5; transition: stroke 0.2s; }
+    .edge-label { fill: #888; font-family: monospace; font-size: 9px; text-anchor: middle; }
+    
+    .tree-node circle, .tree-node rect, .tree-node polygon { stroke-width: 1.5; }
+    .node-max { fill: #0d3859; stroke: #00e5ff; }
+    .node-min { fill: #4a1525; stroke: #ff3366; }
+    .node-chance { fill: #381a5e; stroke: #a855f7; }
+    .node-leaf { fill: #332b00; stroke: #ffd700; }
+    
+    .node-active { stroke: #ffff00 !important; stroke-width: 3 !important; filter: drop-shadow(0 0 5px #ffff00); }
+    .node-val { fill: #fff; font-family: monospace; font-size: 9px; font-weight: bold; text-anchor: middle; dominant-baseline: central; pointer-events: none; }
+  </style>
+</head>
+<body>
+
+  <!-- Left: Arena, Controls, Telemetry & Scoreboard -->
+  <div class="pane left-pane">
+    <h3>1. Tactical Arena</h3>
+    <canvas id="arenaCanvas" width="360" height="360"></canvas>
+    
+    <div class="legend">
+      <div class="legend-item"><div class="legend-icon" style="background:#00e5ff; border-radius:50%"></div> Rover (MAX)</div>
+      <div class="legend-item"><div class="legend-icon" style="background:#ff3366; transform:rotate(45deg)"></div> Drone (MIN)</div>
+      <div class="legend-item"><div class="legend-icon" style="background:#ffd700; border-radius:50%"></div> Core (+50)</div>
+      <div class="legend-item"><div class="legend-icon" style="background:#64748b; border:1px solid #94a3b8"></div> Textured Wall</div>
+    </div>
+
+    <div class="controls">
+      <div class="control-row">
+        <select id="boardSizeSelect" style="flex: 1;">
+          <option value="5">5x5 Board</option>
+          <option value="6" selected>6x6 Board</option>
+          <option value="7">7x7 Board</option>
+          <option value="8">8x8 Board</option>
+        </select>
+        <select id="depthSelect" style="flex: 1;">
+          <option value="1">Depth 1</option>
+          <option value="2" selected>Depth 2</option>
+          <option value="3">Depth 3</option>
+          <option value="4">Depth 4</option>
+          <option value="5">Depth 5</option>
+          <option value="6">Depth 6</option>
+          <option value="7">Depth 7</option>
+          <option value="8">Depth 8</option>
+        </select>
+      </div>
+
+      <div class="control-row">
+        <select id="algoSelect" style="flex: 1;">
+          <option value="minimax" selected>Minimax (Both Search & Contest Cores)</option>
+          <option value="expectimax">Expectimax (Stochastic Drone)</option>
+        </select>
+      </div>
+
+      <div class="control-row">
+        <button id="stepSearchBtn" style="flex:1" disabled>Step Tree</button>
+        <button id="runSearchBtn" class="action-btn" style="flex:1" disabled>▶ Compute</button>
+        <button id="executeTurnBtn" class="turn-btn" style="flex:1" disabled>Execute Turn</button>
+        <button id="resetGameBtn" style="flex:0.8" disabled>Reset</button>
+      </div>
+
+      <div class="slider-container">
+        <span>Step Delay:</span>
+        <input type="range" id="speedSlider" min="5" max="400" value="30">
+        <span id="speedVal">30ms</span>
+      </div>
+    </div>
+
+    <!-- Dual Scoreboard & Operational Telemetry -->
+    <div class="telemetry-box">
+      <div class="telemetry-title" style="display:flex; justify-content:space-between;">
+        <span>Zero-Sum Scoreboard</span>
+        <span id="telemetryCores" style="color:#ffd700; font-weight:normal; font-size:9px;">3 Cores Active</span>
+      </div>
+      <div class="metric-grid">
+        <div class="metric-card">
+          <div class="metric-label" style="color:#00e5ff;">MAX Score (Rover)</div>
+          <div class="metric-val" id="telemetryMaxScore" style="color:#00e5ff;">0 pts</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label" style="color:#ff3366;">MIN Score (Drone)</div>
+          <div class="metric-val" id="telemetryMinScore" style="color:#ff3366;">0 pts</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">MAX Next Action</div>
+          <div class="metric-val" id="telemetryDecision" style="color:#00e5ff;">Pending</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">MIN Next Action</div>
+          <div class="metric-val" id="telemetryMinDecision" style="color:#ff3366;">Pending</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rules & Behavioral Incentives -->
+    <div class="rules-box">
+      <div class="rules-title">Game Rules & Agent Mechanics</div>
+      <ul class="rules-list">
+        <li><strong>Zero-Sum Objective:</strong> Rover (MAX) seeks to maximize utility; Drone (MIN) seeks to minimize it.</li>
+        <li><strong>Turn Order:</strong> Rover moves first each round, followed immediately by Drone's counter-move.</li>
+        <li><strong>Energy Cores (⚡):</strong> Stepping on a core claims it for <strong>+50 pts</strong>. The other agent is permanently denied those points.</li>
+        <li><strong>Collision / Capture:</strong> If Drone intercepts Rover, the mission terminates immediately: MIN earns <strong>+100 pts</strong>, while MAX suffers a catastrophic <strong>-500 penalty</strong>.</li>
+        <li><strong>Proximity Gradients:</strong> Continuous distance heuristics pull Rover toward cores ($+$ score) and Drone toward cores ($-$ score) to prevent horizon blindness when cores are beyond the search depth.</li>
+        <li><strong>Agent Policies:</strong>
+          <ul>
+            <li><em>Minimax:</em> MAX assumes MIN plays optimal counter-moves to deny cores and trap the Rover.</li>
+            <li><em>Expectimax:</em> MAX models MIN as a stochastic agent taking random uniform actions, maximizing expected utility ($E[V]$).</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Center: Code Editor -->
+  <div class="pane middle-pane">
+    <h3>2. Python Search Logic (Competitive Cores)</h3>
+    <div id="editorContainer"></div>
+  </div>
+
+  <!-- Right: Search Tree Visualizer -->
+  <div class="pane right-pane">
+    <div class="tree-toolbar">
+      <span style="font-weight:bold; color:#fff; text-transform:uppercase; font-size:12px;">3. Search Tree Inspector</span>
+      <div class="tree-legend">
+        <span><span class="tree-legend-dot" style="background:#00e5ff"></span> MAX</span>
+        <span><span class="tree-legend-dot" style="background:#ff3366"></span> MIN</span>
+        <span><span class="tree-legend-dot" style="background:#a855f7"></span> CHANCE</span>
+        <span><span class="tree-legend-dot" style="background:#ffd700"></span> LEAF</span>
+      </div>
+    </div>
+    
+    <div id="treeScrollArea">
+      <svg id="treeSvg">
+        <g id="treeEdges"></g>
+        <g id="treeNodes"></g>
+      </svg>
+    </div>
+  </div>
+
+  <script>
+    const CANVAS_PIXELS = 360;
+    let GRID_SIZE = 6;
+    let TILE_SIZE = CANVAS_PIXELS / GRID_SIZE;
+    const NUM_CORES = 3;
+
+    // Structured Wall Templates
+    const WALL_TEMPLATES = {
+      5: [[2, 0], [2, 1], [1, 3], [2, 3], [3, 3]],
+      6: [[2, 1], [2, 2], [2, 3], [4, 2], [4, 3], [4, 4], [1, 4]],
+      7: [[2, 1], [2, 2], [2, 3], [4, 3], [4, 4], [4, 5], [1, 5], [5, 1], [5, 2]],
+      8: [[2, 2], [3, 2], [4, 2], [2, 3], [2, 4], [5, 4], [5, 5], [2, 6], [3, 6], [4, 6], [6, 2], [6, 3]]
+    };
+
+    let activeWalls = WALL_TEMPLATES[6];
+
+    let gameState = {
+      rover: [0, 5],
+      drone: [5, 0],
+      cores: [],
+      maxScore: 0,
+      minScore: 0,
+      gameOver: false
+    };
+
+    let pyodide = null, pythonGenerator = null;
+    let computedBestMove = null;
+    let isComputing = false, computeInterval = null;
+
+    let treeData = { nodes: {}, rootId: "root", activeId: null };
+
+    const canvas = document.getElementById('arenaCanvas'), ctx = canvas.getContext('2d');
+    const boardSizeSelect = document.getElementById('boardSizeSelect');
+    const depthSelect = document.getElementById('depthSelect');
+    const algoSelect = document.getElementById('algoSelect');
+    const stepSearchBtn = document.getElementById('stepSearchBtn');
+    const runSearchBtn = document.getElementById('runSearchBtn');
+    const executeTurnBtn = document.getElementById('executeTurnBtn');
+    const resetGameBtn = document.getElementById('resetGameBtn');
+    const speedSlider = document.getElementById('speedSlider');
+    const speedVal = document.getElementById('speedVal');
+
+    function isWall(x, y) {
+      return activeWalls.some(([wx, wy]) => wx === x && wy === y);
+    }
+
+    function spawnRandomCores() {
+      const cores = [];
+      while (cores.length < NUM_CORES) {
+        const rx = Math.floor(Math.random() * GRID_SIZE);
+        const ry = Math.floor(Math.random() * GRID_SIZE);
+        if (isWall(rx, ry)) continue;
+        if (rx === gameState.rover[0] && ry === gameState.rover[1]) continue;
+        if (rx === gameState.drone[0] && ry === gameState.drone[1]) continue;
+        if (cores.some(([cx, cy]) => cx === rx && cy === ry)) continue;
+        cores.push([rx, ry]);
+      }
+      return cores;
+    }
+
+    function drawArena() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      for (let y = 0; y < GRID_SIZE; y++) {
+        for (let x = 0; x < GRID_SIZE; x++) {
+          if (isWall(x, y)) {
+            ctx.fillStyle = "#475569";
+            ctx.fillRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+            
+            ctx.save();
+            ctx.beginPath();
+            ctx.rect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+            ctx.clip();
+            
+            ctx.strokeStyle = "#94a3b8";
+            ctx.lineWidth = Math.max(1.5, TILE_SIZE / 20);
+            const step = Math.max(5, TILE_SIZE / 6);
+            for (let i = -TILE_SIZE; i < TILE_SIZE * 2; i += step) {
+              ctx.beginPath();
+              ctx.moveTo(x * TILE_SIZE + i, y * TILE_SIZE);
+              ctx.lineTo(x * TILE_SIZE + i + TILE_SIZE, y * TILE_SIZE + TILE_SIZE);
+              ctx.stroke();
+            }
+
+            ctx.strokeStyle = "#cbd5e1";
+            ctx.lineWidth = 1.5;
+            ctx.strokeRect(x * TILE_SIZE + 0.75, y * TILE_SIZE + 0.75, TILE_SIZE - 1.5, TILE_SIZE - 1.5);
+            ctx.restore();
+          } else {
+            ctx.fillStyle = (x + y) % 2 === 0 ? "#14151a" : "#1a1b22";
+            ctx.fillRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+            
+            ctx.strokeStyle = "#2b2e3b";
+            ctx.lineWidth = 1;
+            ctx.strokeRect(x * TILE_SIZE + 0.5, y * TILE_SIZE + 0.5, TILE_SIZE - 1, TILE_SIZE - 1);
+
+            ctx.fillStyle = "#646d84";
+            ctx.font = `${Math.max(8, Math.floor(TILE_SIZE * 0.18))}px monospace`;
+            ctx.fillText(`(${x},${y})`, x * TILE_SIZE + 4, y * TILE_SIZE + Math.floor(TILE_SIZE * 0.25));
+          }
+        }
+      }
+
+      // Energy Cores (+50)
+      gameState.cores.forEach(([cx, cy]) => {
+        ctx.fillStyle = "#ffd700";
+        ctx.beginPath();
+        ctx.arc(cx * TILE_SIZE + TILE_SIZE / 2, cy * TILE_SIZE + TILE_SIZE / 2, TILE_SIZE * 0.22, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = "#000";
+        ctx.font = `bold ${Math.floor(TILE_SIZE * 0.24)}px monospace`;
+        ctx.textAlign = "center";
+        ctx.fillText("⚡", cx * TILE_SIZE + TILE_SIZE / 2, cy * TILE_SIZE + TILE_SIZE / 2 + TILE_SIZE * 0.08);
+      });
+
+      // Drone (MIN)
+      const [dx, dy] = gameState.drone;
+      ctx.save();
+      ctx.translate(dx * TILE_SIZE + TILE_SIZE / 2, dy * TILE_SIZE + TILE_SIZE / 2);
+      ctx.rotate(Math.PI / 4);
+      ctx.fillStyle = "#ff3366";
+      const droneRadius = TILE_SIZE * 0.24;
+      ctx.fillRect(-droneRadius, -droneRadius, droneRadius * 2, droneRadius * 2);
+      ctx.restore();
+      ctx.fillStyle = "#fff";
+      ctx.font = `bold ${Math.floor(TILE_SIZE * 0.22)}px monospace`;
+      ctx.textAlign = "center";
+      ctx.fillText("MIN", dx * TILE_SIZE + TILE_SIZE / 2, dy * TILE_SIZE + TILE_SIZE / 2 + TILE_SIZE * 0.07);
+
+      // Rover (MAX)
+      const [rx, ry] = gameState.rover;
+      ctx.fillStyle = "#00e5ff";
+      ctx.beginPath();
+      ctx.arc(rx * TILE_SIZE + TILE_SIZE / 2, ry * TILE_SIZE + TILE_SIZE / 2, TILE_SIZE * 0.28, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = "#000";
+      ctx.font = `bold ${Math.floor(TILE_SIZE * 0.24)}px monospace`;
+      ctx.textAlign = "center";
+      ctx.fillText("MAX", rx * TILE_SIZE + TILE_SIZE / 2, ry * TILE_SIZE + TILE_SIZE / 2 + TILE_SIZE * 0.08);
+
+      ctx.textAlign = "left";
+    }
+
+    function updateScoreboard() {
+      document.getElementById('telemetryMaxScore').innerText = `${gameState.maxScore} pts`;
+      document.getElementById('telemetryMinScore').innerText = `${gameState.minScore} pts`;
+      document.getElementById('telemetryCores').innerText = `${gameState.cores.length} Cores Active`;
+    }
+
+    // --- TREE VISUALIZATION ENGINE ---
+    function resetTree() {
+      treeData = { nodes: {}, rootId: "root", activeId: null };
+      document.getElementById('treeEdges').innerHTML = '';
+      document.getElementById('treeNodes').innerHTML = '';
+    }
+
+    function recordTreeNode(node) {
+      treeData.nodes[node.id] = {
+        id: node.id,
+        parentId: node.parentId,
+        type: node.type,
+        action: node.action,
+        depth: node.depth,
+        val: node.val,
+        x: 0,
+        y: 0
+      };
+      treeData.activeId = node.id;
+      layoutAndRenderTree();
+    }
+
+    function updateTreeValue(id, val) {
+      if (treeData.nodes[id]) {
+        treeData.nodes[id].val = val;
+        treeData.activeId = id;
+        layoutAndRenderTree();
+      }
+    }
+
+    function layoutAndRenderTree() {
+      const nodes = treeData.nodes;
+      const root = nodes[treeData.rootId];
+      if (!root) return;
+
+      const childrenMap = {};
+      let maxObservedDepth = 0;
+      Object.values(nodes).forEach(n => {
+        if (n.depth > maxObservedDepth) maxObservedDepth = n.depth;
+        if (n.parentId) {
+          if (!childrenMap[n.parentId]) childrenMap[n.parentId] = [];
+          childrenMap[n.parentId].push(n);
+        }
+      });
+
+      let leafCounter = 0;
+      const xSpacing = 42;
+      const ySpacing = 64;
+
+      function assignLeafX(nodeId) {
+        const children = childrenMap[nodeId] || [];
+        if (children.length === 0) {
+          nodes[nodeId].x = leafCounter * xSpacing + 30;
+          leafCounter++;
+        } else {
+          children.forEach(c => assignLeafX(c.id));
+          const firstX = nodes[children[0].id].x;
+          const lastX = nodes[children[children.length - 1].id].x;
+          nodes[nodeId].x = (firstX + lastX) / 2;
+        }
+        nodes[nodeId].y = nodes[nodeId].depth * ySpacing + 32;
+      }
+
+      assignLeafX(treeData.rootId);
+
+      const totalWidth = Math.max(leafCounter * xSpacing + 60, 420);
+      const totalHeight = Math.max((maxObservedDepth + 1) * ySpacing + 60, 280);
+      const svg = document.getElementById('treeSvg');
+      svg.setAttribute('width', totalWidth);
+      svg.setAttribute('height', totalHeight);
+
+      let edgesHtml = '';
+      Object.values(nodes).forEach(n => {
+        if (n.parentId && nodes[n.parentId]) {
+          const p = nodes[n.parentId];
+          edgesHtml += `
+            <line class="edge" x1="${p.x}" y1="${p.y}" x2="${n.x}" y2="${n.y}"/>
+            <text class="edge-label" x="${(p.x + n.x)/2 + (n.x < p.x ? -9 : 9)}" y="${(p.y + n.y)/2}">${n.action || ''}</text>
+          `;
+        }
+      });
+      document.getElementById('treeEdges').innerHTML = edgesHtml;
+
+      let nodesHtml = '';
+      Object.values(nodes).forEach(n => {
+        const isActive = n.id === treeData.activeId;
+        let shapeHtml = '';
+        let displayVal = n.val !== null && n.val !== undefined ? (typeof n.val === 'number' ? n.val.toFixed(0) : n.val) : '?';
+        
+        if (n.type === 'MAX') {
+          shapeHtml = `<circle cx="${n.x}" cy="${n.y}" r="12" class="node-max ${isActive ? 'node-active' : ''}"/>`;
+        } else if (n.type === 'MIN') {
+          shapeHtml = `<rect x="${n.x - 11}" y="${n.y - 11}" width="22" height="22" rx="3" class="node-min ${isActive ? 'node-active' : ''}"/>`;
+        } else if (n.type === 'CHANCE') {
+          shapeHtml = `<polygon points="${n.x},${n.y-12} ${n.x+12},${n.y} ${n.x},${n.y+12} ${n.x-12},${n.y}" class="node-chance ${isActive ? 'node-active' : ''}"/>`;
+        } else {
+          shapeHtml = `<circle cx="${n.x}" cy="${n.y}" r="10" class="node-leaf ${isActive ? 'node-active' : ''}"/>`;
+        }
+
+        nodesHtml += `
+          <g class="tree-node" id="tn_${n.id}">
+            ${shapeHtml}
+            <text class="node-val" x="${n.x}" y="${n.y}">${displayVal}</text>
+          </g>
+        `;
+      });
+      document.getElementById('treeNodes').innerHTML = nodesHtml;
+
+      if (treeData.activeId && nodes[treeData.activeId]) {
+        const activeNode = nodes[treeData.activeId];
+        const scrollArea = document.getElementById('treeScrollArea');
+        const targetX = activeNode.x - scrollArea.clientWidth / 2;
+        const targetY = activeNode.y - scrollArea.clientHeight / 2;
+        scrollArea.scrollTo({ left: targetX, top: targetY, behavior: 'smooth' });
+      }
+    }
+
+    const DEFAULT_CODE = `# --- TUNABLE ZERO-SUM EVALUATION WEIGHTS ---
+PENALTY_LETHAL = -500.0        # Fatal collision with hostile drone
+PENALTY_ADJACENT = -160.0      # Threat zone: drone is 1 step away
+PENALTY_NEARBY = -40.0         # Threat buffer: drone is 2 steps away
+REWARD_CORE = 100.0            # Core collection value (+ for MAX, - for MIN)
+WEIGHT_PROXIMITY = 15.0        # Spatial gradient pulling both toward cores
+
+def evaluate_state(rover, drone, cores, r_eaten, d_eaten, grid_size):
+    # 1. Survival dominance
+    if rover == drone:
+        return PENALTY_LETHAL  # [TAG:EVAL_LEAF]
+
+    # 2. Localized threat threshold (prevents unwarranted fleeing)
+    drone_dist = abs(rover[0] - drone[0]) + abs(rover[1] - drone[1])
+    danger = 0.0
+    if drone_dist <= 1:
+        danger = PENALTY_ADJACENT
+    elif drone_dist == 2:
+        danger = PENALTY_NEARBY
+
+    # 3. Direct Core Points Contest (MAX wants higher score, MIN wants lower)
+    score = (r_eaten * REWARD_CORE) - (d_eaten * REWARD_CORE) + danger
+
+    # 4. Symmetrical Core Distance Gradients
+    if len(cores) > 0:
+        max_dist = 2 * (grid_size - 1)
+        # Closer Rover pulls score UP (+ gradient)
+        min_rover_dist = min(abs(rover[0] - c[0]) + abs(rover[1] - c[1]) for c in cores)
+        score += (max_dist - min_rover_dist) * WEIGHT_PROXIMITY
+
+        # Closer Drone pulls score DOWN (- gradient, incentivizing MIN to contest)
+        min_drone_dist = min(abs(drone[0] - c[0]) + abs(drone[1] - c[1]) for c in cores)
+        score -= (max_dist - min_drone_dist) * WEIGHT_PROXIMITY
+
+    return score  # [TAG:EVAL_LEAF]
+
+def get_legal_moves(pos, walls, grid_size):
+    moves = {}
+    x, y = pos
+    if y > 0 and (x, y - 1) not in walls: moves['U'] = (x, y - 1)
+    if y < grid_size - 1 and (x, y + 1) not in walls: moves['D'] = (x, y + 1)
+    if x > 0 and (x - 1, y) not in walls: moves['L'] = (x - 1, y)
+    if x < grid_size - 1 and (x + 1, y) not in walls: moves['R'] = (x + 1, y)
+    return moves
+
+def run_adversarial_search(rover, drone, cores, r_eaten, d_eaten, walls, grid_size, strategy="minimax", max_depth=2):
+    eval_counter = [0]
+    wall_set = set(walls)
+
+    yield {
+        "event": "NODE_CREATED",
+        "id": "root",
+        "parentId": None,
+        "type": "MAX",
+        "action": "START",
+        "depth": 0,
+        "val": None,
+        "evals": 0
+    }
+
+    def max_value(r_pos, d_pos, rem_cores, r_pts, d_pts, depth, node_id, parent_id, act):
+        eval_counter[0] += 1
+        level = max_depth - depth
+        
+        yield {
+            "tag": "MAX_LOOP",
+            "event": "NODE_CREATED",
+            "id": node_id,
+            "parentId": parent_id,
+            "type": "MAX",
+            "action": act,
+            "depth": level,
+            "val": None,
+            "evals": eval_counter[0]
+        }
+
+        if depth == 0 or r_pos == d_pos or len(rem_cores) == 0:
+            val = evaluate_state(r_pos, d_pos, rem_cores, r_pts, d_pts, grid_size)
+            yield {
+                "tag": "EVAL_LEAF",
+                "event": "NODE_VALUE",
+                "id": node_id,
+                "val": val,
+                "evals": eval_counter[0]
+            }
+            return val
+
+        v = -float('inf')
+        moves = get_legal_moves(r_pos, wall_set, grid_size)  # [TAG:MAX_LOOP]
+        for next_act, next_r in moves.items():
+            ate = 1 if next_r in rem_cores else 0
+            new_cores = [c for c in rem_cores if c != next_r]
+            child_id = f"{node_id}_{next_act}"
+            
+            if strategy == "expectimax":
+                child_v = yield from chance_value(next_r, d_pos, new_cores, r_pts + ate, d_pts, depth - 1, child_id, node_id, next_act)
+            else:
+                child_v = yield from min_value(next_r, d_pos, new_cores, r_pts + ate, d_pts, depth - 1, child_id, node_id, next_act)
+
+            v = max(v, child_v)
+            yield {
+                "event": "NODE_VALUE",
+                "id": node_id,
+                "val": v,
+                "evals": eval_counter[0]
+            }
+        return v
+
+    def min_value(r_pos, d_pos, rem_cores, r_pts, d_pts, depth, node_id, parent_id, act):
+        eval_counter[0] += 1
+        level = max_depth - depth
+
+        yield {
+            "tag": "MIN_LOOP",
+            "event": "NODE_CREATED",
+            "id": node_id,
+            "parentId": parent_id,
+            "type": "MIN",
+            "action": act,
+            "depth": level,
+            "val": None,
+            "evals": eval_counter[0]
+        }
+
+        if depth == 0 or r_pos == d_pos:
+            val = evaluate_state(r_pos, d_pos, rem_cores, r_pts, d_pts, grid_size)
+            yield {
+                "tag": "EVAL_LEAF",
+                "event": "NODE_VALUE",
+                "id": node_id,
+                "val": val,
+                "evals": eval_counter[0]
+            }
+            return val
+
+        v = float('inf')
+        moves = get_legal_moves(d_pos, wall_set, grid_size)  # [TAG:MIN_LOOP]
+        for next_act, next_d in moves.items():
+            ate = 1 if next_d in rem_cores else 0
+            new_cores = [c for c in rem_cores if c != next_d]
+            child_id = f"{node_id}_{next_act}"
+            
+            child_v = yield from max_value(r_pos, next_d, new_cores, r_pts, d_pts + ate, depth - 1, child_id, node_id, next_act)
+            v = min(v, child_v)
+            yield {
+                "event": "NODE_VALUE",
+                "id": node_id,
+                "val": v,
+                "evals": eval_counter[0]
+            }
+        return v
+
+    def chance_value(r_pos, d_pos, rem_cores, r_pts, d_pts, depth, node_id, parent_id, act):
+        eval_counter[0] += 1
+        level = max_depth - depth
+
+        yield {
+            "tag": "CHANCE_LOOP",
+            "event": "NODE_CREATED",
+            "id": node_id,
+            "parentId": parent_id,
+            "type": "CHANCE",
+            "action": act,
+            "depth": level,
+            "val": None,
+            "evals": eval_counter[0]
+        }
+
+        if depth == 0 or r_pos == d_pos:
+            val = evaluate_state(r_pos, d_pos, rem_cores, r_pts, d_pts, grid_size)
+            yield {
+                "tag": "EVAL_LEAF",
+                "event": "NODE_VALUE",
+                "id": node_id,
+                "val": val,
+                "evals": eval_counter[0]
+            }
+            return val
+
+        moves = get_legal_moves(d_pos, wall_set, grid_size)  # [TAG:CHANCE_LOOP]
+        prob = 1.0 / len(moves) if moves else 1.0
+        expected_v = 0.0
+
+        for next_act, next_d in moves.items():
+            ate = 1 if next_d in rem_cores else 0
+            new_cores = [c for c in rem_cores if c != next_d]
+            child_id = f"{node_id}_{next_act}"
+            
+            child_v = yield from max_value(r_pos, next_d, new_cores, r_pts, d_pts + ate, depth - 1, child_id, node_id, next_act)
+            expected_v += prob * child_v
+            yield {
+                "event": "NODE_VALUE",
+                "id": node_id,
+                "val": expected_v,
+                "evals": eval_counter[0]
+            }
+        return expected_v
+
+    # Root Decision for Rover (MAX)
+    root_moves = get_legal_moves(rover, wall_set, grid_size)
+    best_val = -float('inf')
+    best_act = None
+
+    for act, next_r in root_moves.items():
+        ate = 1 if next_r in cores else 0
+        new_cores = [c for c in cores if c != next_r]
+        child_id = f"root_{act}"
+        
+        if strategy == "expectimax":
+            val = yield from chance_value(next_r, drone, new_cores, r_eaten + ate, d_eaten, max_depth - 1, child_id, "root", act)
+        else:
+            val = yield from min_value(next_r, drone, new_cores, r_eaten + ate, d_eaten, max_depth - 1, child_id, "root", act)
+
+        if val > best_val:
+            best_val = val
+            best_act = act
+            
+        yield {
+            "event": "NODE_VALUE",
+            "id": "root",
+            "val": best_val,
+            "evals": eval_counter[0]
+        }
+
+    yield {  # [TAG:ROOT_DECISION]
+        "tag": "ROOT_DECISION",
+        "best_act": best_act,
+        "best_val": best_val,
+        "evals": eval_counter[0]
+    }
+    return best_act
+
+# Fast recursive Minimax evaluator for MIN's turn
+def compute_drone_search(rover, drone, cores, r_eaten, d_eaten, walls, grid_size, depth=2):
+    wall_set = set(walls)
+
+    def sim_max(r_pos, d_pos, rem_cores, r_pts, d_pts, d):
+        if d == 0 or r_pos == d_pos or len(rem_cores) == 0:
+            return evaluate_state(r_pos, d_pos, rem_cores, r_pts, d_pts, grid_size)
+        v = -float('inf')
+        for _, nr in get_legal_moves(r_pos, wall_set, grid_size).items():
+            ate = 1 if nr in rem_cores else 0
+            v = max(v, sim_min(nr, d_pos, [c for c in rem_cores if c != nr], r_pts + ate, d_pts, d - 1))
+        return v
+
+    def sim_min(r_pos, d_pos, rem_cores, r_pts, d_pts, d):
+        if d == 0 or r_pos == d_pos:
+            return evaluate_state(r_pos, d_pos, rem_cores, r_pts, d_pts, grid_size)
+        v = float('inf')
+        for _, nd in get_legal_moves(d_pos, wall_set, grid_size).items():
+            ate = 1 if nd in rem_cores else 0
+            v = min(v, sim_max(r_pos, nd, [c for c in rem_cores if c != nd], r_pts, d_pts + ate, d - 1))
+        return v
+
+    moves = get_legal_moves(drone, wall_set, grid_size)
+    best_v = float('inf')
+    best_m = None
+    for act, nd in moves.items():
+        ate = 1 if nd in cores else 0
+        val = sim_max(rover, nd, [c for c in cores if c != nd], r_eaten, d_eaten + ate, depth - 1)
+        if val < best_v:
+            best_v = val
+            best_m = act
+
+    return best_m
+`;
+
+    let editorDecorations = [];
+    require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.39.0/min/vs' }});
+    require(['vs/editor/editor.main'], function() {
+      window.editor = monaco.editor.create(document.getElementById('editorContainer'), {
+        value: DEFAULT_CODE,
+        language: 'python',
+        theme: 'vs-dark',
+        minimap: { enabled: false },
+        fontSize: 11,
+        lineNumbersMinChars: 3
+      });
+      initPyodide();
+    });
+
+    function highlightTag(tag) {
+      if (!window.editor || !tag) return;
+      const code = window.editor.getValue();
+      const lines = code.split('\n');
+      let targetLine = -1;
+      
+      for (let i = 0; i < lines.length; i++) {
+        if (lines[i].includes(`[TAG:${tag}]`)) {
+          targetLine = i + 1;
+          break;
+        }
+      }
+
+      if (targetLine !== -1) {
+        editorDecorations = window.editor.deltaDecorations(editorDecorations, [
+          { range: new monaco.Range(targetLine, 1, targetLine, 1), options: { isWholeLine: true, className: 'monaco-line-highlight' } }
+        ]);
+        window.editor.revealLineInCenterIfOutsideViewport(targetLine);
+      }
+    }
+
+    async function initPyodide() {
+      pyodide = await loadPyodide();
+      stepSearchBtn.disabled = false;
+      runSearchBtn.disabled = false;
+      resetGameBtn.disabled = false;
+      resetGame();
+    }
+
+    function prepareSearch() {
+      stopAutoCompute();
+      resetTree();
+      
+      const algo = algoSelect.value;
+      const depth = parseInt(depthSelect.value);
+      
+      document.getElementById('telemetryDecision').innerText = "Computing...";
+
+      pyodide.globals.set("js_rover", gameState.rover);
+      pyodide.globals.set("js_drone", gameState.drone);
+      pyodide.globals.set("js_cores", gameState.cores);
+      pyodide.globals.set("js_r_eaten", Math.floor(gameState.maxScore / 50));
+      pyodide.globals.set("js_d_eaten", Math.floor(gameState.minScore / 50));
+      pyodide.globals.set("js_walls", activeWalls);
+      pyodide.globals.set("js_grid_size", GRID_SIZE);
+      pyodide.globals.set("js_strat", algo);
+      pyodide.globals.set("js_depth", depth);
+
+      pyodide.runPython(window.editor.getValue());
+      pythonGenerator = pyodide.runPython(`run_adversarial_search(tuple(js_rover.to_py()), tuple(js_drone.to_py()), [tuple(c) for c in js_cores.to_py()], js_r_eaten, js_d_eaten, [tuple(w) for w in js_walls.to_py()], js_grid_size, strategy=js_strat, max_depth=js_depth)`);
+    }
+
+    function stepSearch() {
+      if (!pythonGenerator) prepareSearch();
+
+      try {
+        const resultDict = pythonGenerator.send(null);
+        const res = resultDict.toJs({ dict_converter: Object.fromEntries });
+        resultDict.destroy();
+
+        highlightTag(res.tag);
+
+        if (res.event === "NODE_CREATED") {
+          recordTreeNode(res);
+        } else if (res.event === "NODE_VALUE") {
+          updateTreeValue(res.id, res.val);
+        } else if (res.tag === "ROOT_DECISION") {
+          computedBestMove = res.best_act;
+          document.getElementById('telemetryDecision').innerText = `${res.best_act} (V: ${res.best_val.toFixed(0)})`;
+          
+          if (algoSelect.value === "minimax") {
+            const minMove = pyodide.runPython(`compute_drone_search(tuple(js_rover.to_py()), tuple(js_drone.to_py()), [tuple(c) for c in js_cores.to_py()], js_r_eaten, js_d_eaten, [tuple(w) for w in js_walls.to_py()], js_grid_size, depth=min(js_depth, 3))`);
+            document.getElementById('telemetryMinDecision').innerText = minMove ? `Anticipating ${minMove}` : "None";
+          } else {
+            document.getElementById('telemetryMinDecision').innerText = "Random Uniform";
+          }
+
+          executeTurnBtn.disabled = false;
+          stopAutoCompute();
+          return false;
+        }
+
+        return true;
+      } catch (err) {
+        stopAutoCompute();
+        return false;
+      }
+    }
+
+    function toggleAutoCompute() {
+      if (isComputing) {
+        stopAutoCompute();
+      } else {
+        prepareSearch();
+        isComputing = true;
+        runSearchBtn.innerText = "⏸ Pause";
+        stepSearchBtn.disabled = true;
+        
+        const delay = parseInt(speedSlider.value);
+        computeInterval = setInterval(() => {
+          const hasMore = stepSearch();
+          if (!hasMore) stopAutoCompute();
+        }, delay);
+      }
+    }
+
+    function stopAutoCompute() {
+      isComputing = false;
+      runSearchBtn.innerText = "▶ Compute";
+      stepSearchBtn.disabled = false;
+      if (computeInterval) clearInterval(computeInterval);
+    }
+
+    function executeTurn() {
+      if (!computedBestMove || gameState.gameOver) return;
+
+      const moves = { 'U': [0, -1], 'D': [0, 1], 'L': [-1, 0], 'R': [1, 0] };
+
+      // 1. Move Rover (MAX)
+      const deltaR = moves[computedBestMove];
+      gameState.rover = [gameState.rover[0] + deltaR[0], gameState.rover[1] + deltaR[1]];
+
+      // Check Rover securing core (+50 MAX)
+      const coresBeforeR = gameState.cores.length;
+      gameState.cores = gameState.cores.filter(([cx, cy]) => cx !== gameState.rover[0] || cy !== gameState.rover[1]);
+      if (coresBeforeR > gameState.cores.length) {
+        gameState.maxScore += 50;
+        updateScoreboard();
+      }
+
+      // Check collision
+      if (gameState.rover[0] === gameState.drone[0] && gameState.rover[1] === gameState.drone[1]) {
+        gameState.minScore += 100;
+        gameState.gameOver = true;
+        updateScoreboard();
+        alert("Mission Terminated: Drone intercepted the Rover! MIN captures +100 pts.");
+        drawArena();
+        return;
+      }
+
+      if (gameState.cores.length === 0) {
+        gameState.gameOver = true;
+        updateScoreboard();
+        alert(`Sector Cleared! All cores resolved. Final: MAX ${gameState.maxScore} | MIN ${gameState.minScore}`);
+        drawArena();
+        return;
+      }
+
+      // 2. Move Drone (MIN) via Adversarial Search
+      const algo = algoSelect.value;
+      let droneAct = null;
+
+      if (algo === "minimax") {
+        pyodide.globals.set("js_rover", gameState.rover);
+        pyodide.globals.set("js_drone", gameState.drone);
+        pyodide.globals.set("js_cores", gameState.cores);
+        pyodide.globals.set("js_r_eaten", Math.floor(gameState.maxScore / 50));
+        pyodide.globals.set("js_d_eaten", Math.floor(gameState.minScore / 50));
+        
+        droneAct = pyodide.runPython(`compute_drone_search(tuple(js_rover.to_py()), tuple(js_drone.to_py()), [tuple(c) for c in js_cores.to_py()], js_r_eaten, js_d_eaten, [tuple(w) for w in js_walls.to_py()], js_grid_size, depth=min(js_depth, 3))`);
+      } else {
+        const legalActs = [];
+        const [dx, dy] = gameState.drone;
+        Object.entries(moves).forEach(([act, [mx, my]]) => {
+          const nx = dx + mx, ny = dy + my;
+          if (nx >= 0 && nx < GRID_SIZE && ny >= 0 && ny < GRID_SIZE && !isWall(nx, ny)) {
+            legalActs.push(act);
+          }
+        });
+        droneAct = legalActs[Math.floor(Math.random() * legalActs.length)];
+      }
+
+      if (droneAct && moves[droneAct]) {
+        const deltaD = moves[droneAct];
+        gameState.drone = [gameState.drone[0] + deltaD[0], gameState.drone[1] + deltaD[1]];
+      }
+
+      // Drone securing/destroying core (+50 MIN)
+      const coresBeforeD = gameState.cores.length;
+      gameState.cores = gameState.cores.filter(([cx, cy]) => cx !== gameState.drone[0] || cy !== gameState.drone[1]);
+      if (coresBeforeD > gameState.cores.length) {
+        gameState.minScore += 50;
+        updateScoreboard();
+      }
+
+      // Check collision after Drone step
+      if (gameState.rover[0] === gameState.drone[0] && gameState.rover[1] === gameState.drone[1]) {
+        gameState.minScore += 100;
+        gameState.gameOver = true;
+        updateScoreboard();
+        alert("Mission Terminated: Drone intercepted the Rover! MIN captures +100 pts.");
+      } else if (gameState.cores.length === 0) {
+        gameState.gameOver = true;
+        updateScoreboard();
+        alert(`Sector Cleared! All cores resolved. Final: MAX ${gameState.maxScore} | MIN ${gameState.minScore}`);
+      }
+
+      computedBestMove = null;
+      pythonGenerator = null;
+      executeTurnBtn.disabled = true;
+      document.getElementById('telemetryDecision').innerText = "Pending";
+      document.getElementById('telemetryMinDecision').innerText = "Pending";
+      resetTree();
+      drawArena();
+    }
+
+    function resetGame() {
+      stopAutoCompute();
+
+      GRID_SIZE = parseInt(boardSizeSelect.value);
+      TILE_SIZE = CANVAS_PIXELS / GRID_SIZE;
+      activeWalls = WALL_TEMPLATES[GRID_SIZE] || [];
+
+      gameState = {
+        rover: [0, GRID_SIZE - 1],
+        drone: [GRID_SIZE - 1, 0],
+        cores: [],
+        maxScore: 0,
+        minScore: 0,
+        gameOver: false
+      };
+      
+      gameState.cores = spawnRandomCores();
+
+      computedBestMove = null;
+      pythonGenerator = null;
+      executeTurnBtn.disabled = true;
+      updateScoreboard();
+      document.getElementById('telemetryDecision').innerText = "Pending";
+      document.getElementById('telemetryMinDecision').innerText = "Pending";
+      resetTree();
+      drawArena();
+    }
+
+    speedSlider.addEventListener('input', (e) => {
+      speedVal.innerText = `${e.target.value}ms`;
+      if (isComputing) {
+        clearInterval(computeInterval);
+        computeInterval = setInterval(stepSearch, parseInt(e.target.value));
+      }
+    });
+
+    stepSearchBtn.addEventListener('click', stepSearch);
+    runSearchBtn.addEventListener('click', toggleAutoCompute);
+    executeTurnBtn.addEventListener('click', executeTurn);
+    resetGameBtn.addEventListener('click', resetGame);
+    boardSizeSelect.addEventListener('change', resetGame);
+    depthSelect.addEventListener('change', resetGame);
+    algoSelect.addEventListener('change', resetGame);
+
+    drawArena();
+  </script>
+</body>
+</html>

@@ -156,7 +156,14 @@ Why might an alert still yield a posterior probability of failure ($P(\text{Fail
 
 Because failures are so rare, the false alerts generated from the massive no-failure population vastly outnumber the valid alerts generated from the tiny failure population. The 95% detection rate represents the *likelihood* ($P(\text{Alert} \mid \text{Failure})$), which is fundamentally different from the *posterior* ($P(\text{Failure} \mid \text{Alert})$).
 
----
+
+--- 
+
+## Summary Infographic
+![Bayes](../../figures/bayes.png "Bayes")
+
+<br>
+<hr width="100%" size="4" color="black">
 
 ## Knowledge Check & Practice Questions
 

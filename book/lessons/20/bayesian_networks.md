@@ -120,6 +120,15 @@ $P(M \mid V, C)$: $4$ parameters
 
 Total: $1 + 2 + 2 + 4 = 9$ independent parameters, providing significant memory savings and robust parameter estimation under limited combat reconnaissance data.
 
+---
+
+## Summary Infographic
+![Bayes' Networks](../../figures/bayes_networks.png "Bayes' Networks")
+
+<br>
+<hr width="100%" size="4" color="black">
+
+
 ## Knowledge Check & Practice Questions
 
 1. Consider a Bayesian network modeling drone strike operations: $W \to V$, $W \to C$, $V \to M$, $C \to M$, where $W$ is weather, $V$ is visibility, $C$ is communications, and $M$ is mission success. What are the immediate parents of $M$?

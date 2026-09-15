@@ -174,6 +174,36 @@
                     <a href="18_worksheet_solutions.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-primary" role="button">Solution</a>
                 </td>
             </tr>
+            <tr>
+                <td><strong>19</strong></td>
+                <td>Bayes' Rule</td>
+                <td>
+                    <a href="19_worksheet.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-primary" role="button">Worksheet</a>
+                </td>
+                <td>
+                    <a href="19_worksheet_solutions.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-primary" role="button">Solution</a>
+                </td>
+            </tr>
+            <tr>
+                <td><strong>20</strong></td>
+                <td>Baysian Networks</td>
+                <td>
+                    <a href="20_worksheet.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-primary" role="button">Worksheet</a>
+                </td>
+                <td>
+                    <a href="20_worksheet_solutions.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-primary" role="button">Solution</a>
+                </td>
+            </tr>
+            <tr>
+                <td><strong>21</strong></td>
+                <td>Baysian Inference</td>
+                <td>
+                    <a href="21_worksheet.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-primary" role="button">Worksheet</a>
+                </td>
+                <td>
+                    <a href="21_worksheet_solutions.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-primary" role="button">Solution</a>
+                </td>
+            </tr>
         </tbody>
     </table>
 </div>

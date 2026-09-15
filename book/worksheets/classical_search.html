@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Signal & Strata: AI Search Lab</title>
+  <!-- Pyodide -->
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js"></script>
+  <!-- Monaco Editor Loader -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.39.0/min/vs/loader.min.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      display: flex;
+      gap: 12px;
+      padding: 12px;
+      background: #181818;
+      color: #ccc;
+      margin: 0;
+      height: 100vh;
+      overflow: hidden;
+    }
+    h3 { margin: 0 0 8px 0; color: #fff; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #333; padding-bottom: 6px; }
+    
+    .pane {
+      display: flex;
+      flex-direction: column;
+      background: #222;
+      padding: 12px;
+      border-radius: 6px;
+      border: 1px solid #333;
+    }
+    
+    /* Left Pane: Canvas, Controls, Telemetry & Frontier */
+    .left-pane {
+      width: 480px;
+      flex-shrink: 0;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .left-pane::-webkit-scrollbar { width: 6px; }
+    .left-pane::-webkit-scrollbar-thumb { background: #444; border-radius: 3px; }
+
+    canvas { border: 2px solid #444; background: #000; image-rendering: pixelated; border-radius: 4px; display: block; margin: 0 auto; }
+    
+    .legend { display: flex; justify-content: space-between; font-size: 11px; color: #aaa; padding: 0 4px; }
+    .legend-item { display: flex; align-items: center; gap: 4px; }
+    .legend-box { width: 10px; height: 10px; border-radius: 2px; }
+
+    .controls { display: flex; flex-direction: column; gap: 8px; }
+    .btn-row { display: flex; gap: 6px; }
+    button, select {
+      padding: 7px 10px;
+      background: #0e639c;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    button:hover { background: #1177bb; }
+    button:disabled { background: #444; color: #888; cursor: not-allowed; }
+    .play-btn { background: #238636; }
+    .play-btn:hover { background: #2ea043; }
+    .play-btn.paused { background: #da3633; }
+    .play-btn.paused:hover { background: #f85149; }
+
+    .slider-container { display: flex; align-items: center; justify-content: space-between; font-size: 11px; color: #aaa; }
+    .slider-container input { width: 65%; cursor: pointer; }
+
+    /* Operational Telemetry Cards */
+    .telemetry-box { background: #1a1a1a; padding: 8px; border-radius: 4px; border: 1px solid #333; display: flex; flex-direction: column; gap: 6px; }
+    .telemetry-title { font-size: 11px; font-weight: bold; color: #888; text-transform: uppercase; letter-spacing: 0.5px; }
+    .metric-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+    .metric-card { background: #242424; padding: 6px 8px; border-radius: 3px; border: 1px solid #333; font-family: monospace; font-size: 11px; }
+    .metric-label { font-size: 10px; color: #888; text-transform: uppercase; }
+    .metric-val { font-size: 13px; font-weight: bold; color: #fff; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    /* Frontier Inspector Panel */
+    .inspector-panel { background: #1a1a1a; border: 1px solid #333; border-radius: 4px; display: flex; flex-direction: column; overflow: hidden; max-height: 220px; min-height: 160px; }
+    .panel-header { background: #252525; padding: 6px 10px; font-size: 11px; font-weight: bold; border-bottom: 1px solid #333; display: flex; justify-content: space-between; align-items: center; }
+    .frontier-list { flex: 1; overflow-y: auto; padding: 6px; display: flex; flex-direction: column; gap: 4px; }
+    .frontier-list::-webkit-scrollbar { width: 4px; }
+    .frontier-list::-webkit-scrollbar-thumb { background: #444; border-radius: 2px; }
+    
+    .node-item {
+      padding: 5px 8px;
+      background: #252526;
+      border: 1px solid #3a3a3a;
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 11px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .node-item.top { border-color: #238636; background: #122817; }
+    .node-badge { background: #333; padding: 2px 4px; border-radius: 3px; font-size: 10px; color: #ddd; }
+
+    /* Right Pane: Code Editor */
+    .editor-pane { flex: 1; min-width: 400px; display: flex; flex-direction: column; }
+    #editorContainer { flex-grow: 1; border: 1px solid #333; border-radius: 4px; overflow: hidden; }
+    .monaco-line-highlight { background: rgba(234, 179, 8, 0.25) !important; border-left: 4px solid #eab308; }
+  </style>
+</head>
+<body>
+
+  <!-- Left: Game Grid, Controls, Telemetry & Frontier Inspector -->
+  <div class="pane left-pane">
+    <h3>1. Environment (Moon Surface)</h3>
+    <canvas id="gridCanvas" width="456" height="456"></canvas>
+    
+    <div class="legend">
+      <div class="legend-item"><div class="legend-box" style="background:#1a1a1a; border:1px solid #444"></div> Flat (1)</div>
+      <div class="legend-item"><div class="legend-box" style="background:#5c3a21"></div> Mud (3)</div>
+      <div class="legend-item"><div class="legend-box" style="background:#3a3a3a"></div> Wall (∞)</div>
+      <div class="legend-item"><div class="legend-box" style="background:#0e639c"></div> Closed</div>
+      <div class="legend-item"><div class="legend-box" style="background:#eab308"></div> Frontier</div>
+      <div class="legend-item"><div class="legend-box" style="background:#2ea043"></div> Active</div>
+    </div>
+
+    <div class="controls">
+      <select id="algoSelect">
+        <option value="a_star" selected>A* Search (Informed: f = g + h)</option>
+        <option value="ucs">Uniform-Cost Search (Informed Cost: g)</option>
+        <option value="bfs">Breadth-First Search (Uninformed FIFO)</option>
+        <option value="dfs">Depth-First Search (Uninformed LIFO)</option>
+      </select>
+
+      <div class="btn-row">
+        <button id="stepBtn" style="flex:1" disabled>Step</button>
+        <button id="playBtn" class="play-btn" style="flex:1" disabled>▶ Play</button>
+        <button id="resetBtn" style="flex:1" disabled>Reset</button>
+      </div>
+
+      <div class="slider-container">
+        <span>Playback Speed:</span>
+        <input type="range" id="speedSlider" min="20" max="600" value="120">
+        <span id="speedVal">120ms</span>
+      </div>
+    </div>
+
+    <!-- Operational Telemetry Box -->
+    <div class="telemetry-box">
+      <div class="telemetry-title">Operational Telemetry</div>
+      <div class="metric-grid">
+        <div class="metric-card">
+          <div class="metric-label">Active Node</div>
+          <div class="metric-val" id="telemetryCurrent">None</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label" id="costLabel">Estimate f(n) = g + h</div>
+          <div class="metric-val" id="telemetryCost">--</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Explored (Closed)</div>
+          <div class="metric-val" id="telemetryExplored">0</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Frontier (Open)</div>
+          <div class="metric-val" id="telemetryFrontier">1</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Frontier Inspector Positioned Directly Below Telemetry -->
+    <div class="inspector-panel">
+      <div class="panel-header">
+        <span>FRONTIER DATA STRUCTURE</span>
+        <span id="structureLabel" style="color:#aaa; font-size:10px; font-weight:normal;">Min-Priority Queue</span>
+      </div>
+      <div class="frontier-list" id="frontierDisplay"></div>
+    </div>
+  </div>
+
+  <!-- Right: Code Viewer -->
+  <div class="pane editor-pane">
+    <h3>2. Logic Core (Python)</h3>
+    <div id="editorContainer"></div>
+  </div>
+
+  <script>
+    const TILE_SIZE = 38;
+    const GRID_SIZE = 12;
+    const GRID = [
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 1, 0, 2, 2, 2, 2, 0],
+      [0, 1, 1, 1, 0, 1, 0, 2, 0, 0, 2, 0],
+      [0, 1, 0, 0, 0, 0, 0, 2, 0, 1, 2, 0],
+      [0, 1, 0, 1, 1, 1, 1, 2, 0, 1, 0, 0],
+      [0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0],
+      [0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0],
+      [0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0],
+      [0, 1, 1, 1, 0, 1, 0, 2, 2, 0, 1, 0],
+      [0, 0, 0, 0, 0, 1, 0, 2, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0]
+    ];
+    const START = [0, 0];
+    const GOAL = [11, 11];
+
+    let pyodide = null, pythonGenerator = null;
+    let isPlaying = false, playInterval = null;
+    let lastState = { explored: [], frontier: [], current: null, path: [], g: 0, h: 0, p: 0 };
+    
+    const canvas = document.getElementById('gridCanvas'), ctx = canvas.getContext('2d');
+    const stepBtn = document.getElementById('stepBtn');
+    const playBtn = document.getElementById('playBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const speedSlider = document.getElementById('speedSlider');
+    const speedVal = document.getElementById('speedVal');
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      for (let y = 0; y < GRID_SIZE; y++) {
+        for (let x = 0; x < GRID_SIZE; x++) {
+          if (GRID[y][x] === 1) ctx.fillStyle = "#3a3a3a";
+          else if (GRID[y][x] === 2) ctx.fillStyle = "#5c3a21";
+          else ctx.fillStyle = "#1a1a1a";
+          ctx.fillRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE - 1, TILE_SIZE - 1);
+        }
+      }
+
+      // Explored States
+      ctx.fillStyle = "rgba(14, 99, 156, 0.45)";
+      lastState.explored.forEach(([x, y]) => {
+        ctx.fillRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE - 1, TILE_SIZE - 1);
+      });
+
+      // Frontier States
+      ctx.fillStyle = "rgba(234, 179, 8, 0.4)";
+      lastState.frontier.forEach(f => {
+        ctx.fillRect(f.state[0] * TILE_SIZE, f.state[1] * TILE_SIZE, TILE_SIZE - 1, TILE_SIZE - 1);
+      });
+
+      // Current Step Node
+      if (lastState.current) {
+        ctx.fillStyle = "rgba(46, 160, 67, 0.85)";
+        ctx.fillRect(lastState.current[0] * TILE_SIZE, lastState.current[1] * TILE_SIZE, TILE_SIZE - 1, TILE_SIZE - 1);
+      }
+
+      // Reconstructed Goal Path
+      if (lastState.path && lastState.path.length) {
+        ctx.fillStyle = "#ff3366";
+        lastState.path.forEach(([x, y]) => {
+          ctx.fillRect(x * TILE_SIZE + 10, y * TILE_SIZE + 10, TILE_SIZE - 20, TILE_SIZE - 20);
+        });
+      }
+
+      // Terminal Labels
+      ctx.font = "bold 14px monospace";
+      ctx.fillStyle = "#00e5ff"; ctx.fillText("S", START[0]*TILE_SIZE + 14, START[1]*TILE_SIZE + 24);
+      ctx.fillStyle = "#ffcc00"; ctx.fillText("G", GOAL[0]*TILE_SIZE + 14, GOAL[1]*TILE_SIZE + 24);
+    }
+
+    function updateTelemetryAndInspector() {
+      const container = document.getElementById('frontierDisplay');
+      container.innerHTML = '';
+      const algo = document.getElementById('algoSelect').value;
+      
+      let nodes = [...lastState.frontier];
+      if (algo === 'ucs' || algo === 'a_star') {
+        nodes.sort((a, b) => a.p - b.p);
+      } else if (algo === 'dfs') {
+        nodes.reverse();
+      }
+
+      document.getElementById('telemetryExplored').innerText = lastState.explored.length;
+      document.getElementById('telemetryFrontier').innerText = lastState.frontier.length;
+      
+      if (lastState.current) {
+        document.getElementById('telemetryCurrent').innerText = `(${lastState.current[0]}, ${lastState.current[1]})`;
+      } else {
+        document.getElementById('telemetryCurrent').innerText = "None";
+      }
+
+      // Context-aware Cost Evaluation
+      const costLabel = document.getElementById('costLabel');
+      const costVal = document.getElementById('telemetryCost');
+
+      if (algo === 'bfs' || algo === 'dfs') {
+        costLabel.innerText = "Evaluation";
+        costVal.innerHTML = `<span style="color:#777; font-size:11px;">Uninformed</span>`;
+      } else if (algo === 'ucs') {
+        costLabel.innerText = "Path Cost g(n)";
+        costVal.innerText = lastState.current ? `g = ${lastState.g}` : "--";
+      } else if (algo === 'a_star') {
+        costLabel.innerText = "Estimate f(n) = g + h";
+        costVal.innerText = lastState.current ? `f = ${lastState.p} (${lastState.g} + ${lastState.h})` : "--";
+      }
+
+      // Render Frontier Items
+      nodes.forEach((n, idx) => {
+        let el = document.createElement('div');
+        el.className = 'node-item' + (idx === 0 ? ' top' : '');
+        let label = `(${n.state[0]}, ${n.state[1]})`;
+        let metric = '';
+
+        if (algo === 'a_star') {
+          metric = `<span class="node-badge">f:${n.p}</span> <span class="node-badge">g:${n.g}</span>`;
+        } else if (algo === 'ucs') {
+          metric = `<span class="node-badge">g:${n.g}</span>`;
+        } else if (algo === 'dfs') {
+          metric = `<span class="node-badge">LIFO</span>`;
+        } else if (algo === 'bfs') {
+          metric = `<span class="node-badge">FIFO</span>`;
+        }
+
+        el.innerHTML = `<span>${idx === 0 ? '▶ ' : ''}${label}</span> <div>${metric}</div>`;
+        container.appendChild(el);
+      });
+    }
+
+    const DEFAULT_CODE = `import heapq
+
+# --- EDITABLE HEURISTIC ---
+def heuristic(a, b):
+    # Manhattan: abs(x1 - x2) + abs(y1 - y2)
+    return abs(a[0] - b[0]) + abs(a[1] - b[1])
+
+class Node:
+    def __init__(self, state, parent, cost, step):
+        self.state, self.parent, self.cost, self.step = state, parent, cost, step
+    def __lt__(self, other):
+        return self.step < other.step
+
+def run_search(grid, start, goal, strategy="a_star"):
+    counter = 0
+    frontier = []
+    start_h = heuristic(start, goal) if strategy == "a_star" else 0
+    heapq.heappush(frontier, (start_h, counter, Node(start, None, 0, counter)))
+    explored = set()
+    best_cost = {start: 0}
+
+    while frontier:
+        prio, _, current = heapq.heappop(frontier)  # [TAG:POP]
+        curr_h = heuristic(current.state, goal)
+        yield {
+            "tag": "POP",
+            "current": current.state,
+            "g": current.cost,
+            "h": curr_h,
+            "p": prio,
+            "frontier": [{"state": i[2].state, "p": i[0], "g": i[2].cost} for i in frontier],
+            "explored": list(explored)
+        }
+
+        if current.state == goal:  # [TAG:GOAL_CHECK]
+            path, curr = [], current
+            while curr:
+                path.append(curr.state)
+                curr = curr.parent
+            yield {"tag": "GOAL_FOUND", "path": path[::-1]}  # [TAG:GOAL_FOUND]
+            return
+
+        explored.add(current.state)  # [TAG:MARK_EXPLORED]
+
+        for dx, dy in [(0, 1), (1, 0), (0, -1), (-1, 0)]:
+            nx, ny = current.state[0] + dx, current.state[1] + dy
+            
+            if not (0 <= ny < len(grid) and 0 <= nx < len(grid[0])):
+                continue
+            if grid[ny][nx] == 1:
+                continue
+
+            move_cost = 3 if grid[ny][nx] == 2 else 1
+            new_g = current.cost + move_cost
+            neighbor = (nx, ny)
+
+            if neighbor not in explored:  # [TAG:PRUNE_CHECK]
+                if neighbor not in best_cost or new_g < best_cost[neighbor]:
+                    best_cost[neighbor] = new_g
+                    counter += 1
+
+                    h = heuristic(neighbor, goal)  # [TAG:EVAL_PRIORITY]
+                    if strategy == "bfs": p = counter
+                    elif strategy == "dfs": p = -counter
+                    elif strategy == "ucs": p = new_g
+                    elif strategy == "a_star": p = new_g + h
+
+                    child = Node(neighbor, current, new_g, counter)
+                    heapq.heappush(frontier, (p, counter, child))  # [TAG:PUSH]
+                    yield {
+                        "tag": "PUSH",
+                        "frontier": [{"state": i[2].state, "p": i[0], "g": i[2].cost} for i in frontier],
+                        "explored": list(explored)
+                    }
+`;
+
+    let editorDecorations = [];
+    require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.39.0/min/vs' }});
+    require(['vs/editor/editor.main'], function() {
+      window.editor = monaco.editor.create(document.getElementById('editorContainer'), {
+        value: DEFAULT_CODE,
+        language: 'python',
+        theme: 'vs-dark',
+        minimap: { enabled: false },
+        fontSize: 12,
+        lineNumbersMinChars: 3
+      });
+      initPyodide();
+    });
+
+    function highlightTag(tag) {
+      if (!window.editor) return;
+      const code = window.editor.getValue();
+      const lines = code.split('\n');
+      let targetLine = -1;
+      
+      for (let i = 0; i < lines.length; i++) {
+        if (lines[i].includes(`[TAG:${tag}]`)) {
+          targetLine = i + 1;
+          break;
+        }
+      }
+
+      if (targetLine !== -1) {
+        editorDecorations = window.editor.deltaDecorations(editorDecorations, [
+          { range: new monaco.Range(targetLine, 1, targetLine, 1), options: { isWholeLine: true, className: 'monaco-line-highlight' } }
+        ]);
+        window.editor.revealLineInCenterIfOutsideViewport(targetLine);
+      }
+    }
+
+    async function initPyodide() {
+      pyodide = await loadPyodide();
+      resetBtn.disabled = false;
+      stepBtn.disabled = false;
+      playBtn.disabled = false;
+      resetSearch();
+    }
+
+    function resetSearch() {
+      stopPlayback();
+      const algo = document.getElementById('algoSelect').value;
+      
+      const labelMap = {
+        "a_star": "Min-Priority Queue (f = g + h)",
+        "ucs": "Min-Priority Queue (g)",
+        "bfs": "FIFO Queue",
+        "dfs": "LIFO Stack"
+      };
+      document.getElementById('structureLabel').innerText = labelMap[algo];
+
+      pyodide.globals.set("js_grid", GRID);
+      pyodide.globals.set("js_start", START);
+      pyodide.globals.set("js_goal", GOAL);
+      pyodide.globals.set("js_strategy", algo);
+      
+      pyodide.runPython(window.editor.getValue());
+      pythonGenerator = pyodide.runPython(`run_search(js_grid.to_py(), tuple(js_start.to_py()), tuple(js_goal.to_py()), strategy=js_strategy)`);
+      
+      lastState = { explored: [], frontier: [], current: null, path: [], g: 0, h: 0, p: 0 };
+      
+      stepBtn.disabled = false;
+      playBtn.disabled = false;
+      highlightTag("POP");
+      draw();
+      updateTelemetryAndInspector();
+    }
+
+    function executeStep() {
+      try {
+        const resultDict = pythonGenerator.send(null);
+        const res = resultDict.toJs({ dict_converter: Object.fromEntries });
+        resultDict.destroy();
+
+        highlightTag(res.tag);
+
+        if (res.tag === "POP") {
+          lastState.current = res.current;
+          lastState.g = res.g;
+          lastState.h = res.h;
+          lastState.p = res.p;
+          lastState.frontier = res.frontier;
+          lastState.explored = res.explored;
+        } else if (res.tag === "PUSH") {
+          lastState.frontier = res.frontier;
+        } else if (res.tag === "GOAL_FOUND") {
+          lastState.path = res.path;
+          stopPlayback();
+          stepBtn.disabled = true;
+          playBtn.disabled = true;
+        }
+
+        draw();
+        updateTelemetryAndInspector();
+        return true;
+      } catch (err) {
+        stopPlayback();
+        stepBtn.disabled = true;
+        playBtn.disabled = true;
+        return false;
+      }
+    }
+
+    function togglePlayback() {
+      if (isPlaying) {
+        stopPlayback();
+      } else {
+        isPlaying = true;
+        playBtn.innerText = "⏸ Pause";
+        playBtn.classList.add("paused");
+        stepBtn.disabled = true;
+        
+        const delay = parseInt(speedSlider.value);
+        playInterval = setInterval(() => {
+          const hasMore = executeStep();
+          if (!hasMore) stopPlayback();
+        }, delay);
+      }
+    }
+
+    function stopPlayback() {
+      isPlaying = false;
+      playBtn.innerText = "▶ Play";
+      playBtn.classList.remove("paused");
+      if (playInterval) clearInterval(playInterval);
+      if (lastState.path.length === 0) stepBtn.disabled = false;
+    }
+
+    speedSlider.addEventListener('input', (e) => {
+      speedVal.innerText = `${e.target.value}ms`;
+      if (isPlaying) {
+        clearInterval(playInterval);
+        playInterval = setInterval(executeStep, parseInt(e.target.value));
+      }
+    });
+
+    stepBtn.addEventListener('click', executeStep);
+    playBtn.addEventListener('click', togglePlayback);
+    resetBtn.addEventListener('click', resetSearch);
+    document.getElementById('algoSelect').addEventListener('change', resetSearch);
+    
+    draw();
+  </script>
+</body>
+</html>

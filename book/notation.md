@@ -103,6 +103,8 @@ While L1 is primarily conceptual, the evaluation of an agent's performance relie
 | $P(A \mid B) = \frac{P(B \mid A)P(A)}{P(B)}$| Bayes' Rule formulation.|
 
 ## L20: Bayesian Networks & Graphical Models
+| Notation | Definition |
+| --- | --- |
 | $\mathcal{G} = (V, E)$ | A directed acyclic graph with a set of vertices (nodes) $V$ and directed edges $E$. |
 | $X_i \in V$ | A random variable represented as a node in the graph. |
 | $Parents(X_i)$ or $Pa(X_i)$ | The set of immediate parent nodes of $X_i$ with edges directed into $X_i$. |
@@ -111,6 +113,18 @@ While L1 is primarily conceptual, the evaluation of an agent's performance relie
 | $Descendants(X_i)$ | The set of all nodes reachable from $X_i$ along a directed path. |
 | $P(X_1, X_2, \dots, X_n) = \prod_{i=1}^n P(X_i \mid Parents(X_i))$ | The chain rule decomposition of the joint probability distribution over a Bayesian network. |
 | $X \perp Y \mid Z$ | Variable $X$ is conditionally independent of variable $Y$ given variable $Z$. |
+
+## L21: Probabilistic Inference Variables & Operators
+| Notation | Definition |
+| --- | --- |
+| $Q$ | The Query Variable(s) whose posterior distribution $P(Q \mid E=e)$ an agent computes.|
+| $E = e$ | The Evidence Variable(s) instantiated to observed tactical measurements $e$. |
+| $H$ | The Hidden (Latent) Variable(s) that are neither queried nor observed, requiring marginalization.| 
+| $\mathbf{X} = \{Q\} \cup \mathbf{E} \cup \mathbf{H}$ | The complete partition of all random variables in the Bayesian network.|
+| $\alpha$ | The Normalization Constant: $\alpha = \frac{1}{\sum_q P(Q=q, E=e)} = \frac{1}{P(E=e)}$, scaling unnormalized sums to sum to 1.0.|
+| $\sum_h$ | The Marginalization Operator: summing out all configurations of hidden variables $h \in H$. |
+| $P(Q \mid E=e) = \alpha \sum_h P(Q, E=e, H=h)$ | The general equation for exact Inference by Enumeration. |
+| $\mathbf{P}(Q \mid E=e)$ | Bold notation representing the full posterior probability distribution vector over all states of $Q$.|
 
 ## L27: ML Foundations
 ### Confusion Matrix
