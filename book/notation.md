@@ -126,6 +126,28 @@ While L1 is primarily conceptual, the evaluation of an agent's performance relie
 | $P(Q \mid E=e) = \alpha \sum_h P(Q, E=e, H=h)$ | The general equation for exact Inference by Enumeration. |
 | $\mathbf{P}(Q \mid E=e)$ | Bold notation representing the full posterior probability distribution vector over all states of $Q$.|
 
+## L22: Markov Models (Markov Chains)
+### State Sequences & Transitions
+| Notation | Definition |
+| --- | --- |
+| $X_t$ | Discrete random variable representing the physical state of the system at time step $t \in \{0, 1, 2, \dots\}$. |
+| $S = \{s_1, s_2, \dots, s_N\}$ | Discrete {term}State Space consisting of $N$ mutually exclusive states.|
+| $\mathbf{p}_0 = \langle P(X_0 = s_1), \dots, P(X_0 = s_N) \rangle$ | {term}`Initial State Distribution` row vector at time step $t=0$, satisfying $\sum_i p_{0, i} = 1.0$.|
+| $\mathbf{p}_t = \langle P(X_t = s_1), \dots, P(X_t = s_N) \rangle$ | State probability distribution row vector at time step $t$.|
+| $T_{ij} = P(X_{t+1} = s_j \mid X_t = s_i)$ | Single-step transition probability from state $s_i$ to state $s_j$. |
+| $T \in \mathbb{R}^{N \times N}$ | {term}`Transition Matrix` (stochastic matrix) where each row $i$ sums to $1.0$: $\sum_{j=1}^N T_{ij} = 1.0$.|
+| $T^k$ | $k$-th matrix power of $T$, where entry $(T^k)_{ij} = P(X_{t+k} = s_j \mid X_t = s_i)$ is the $k$-step transition probability.|
+
+### Fundamental Assumptions & Multi-Step Propagation
+| Notation / Equation | Definition | Operational Meaning |
+| --- | --- | --- |
+| $P(X_t \mid X_{t-1}, \dots, X_0) = P(X_t \mid X_{t-1})$ |  {term}`First-Order Markov Assumption` | The future state depends strictly on the current state, rendering past history conditionally independent. |
+| P(X_{t+1} = j \mid X_t = i) = P(X_1 = j \mid X_0 = i)$ | {term}`Stationary Assumption (Time-Homogeneity)` | The underlying transition dynamics do not change as time advances. |
+| $P(X_0, X_1, \dots, X_t) = P(X_0) \prod_{i=1}^t P(X_i \mid X_{i-1})$ | Joint Distribution Factorization | Joint trajectory probability computed by chaining the initial prior and one-step transitions. |
+| $\mathbf{p}_t = \mathbf{p}_0 T^t$ | Vector State Update Equation |  Forward propagation of state belief vector $\mathbf{p}_t$ over $t$ discrete time steps.|
+| $P(X_2 = j) = \sum_{i=1}^N P(X_2 = j \mid X_1 = i) P(X_1 = i)$ | Mini-Forward Marginalization | Step-by-step marginalization over intermediate hidden state $X_1$.|
+| $\mathbf{\pi} = \mathbf{\pi} T, \quad \sum_{i=1}^N \pi_i = 1.0$ | {term}`Stationary Distribution` | Invariant long-run equilibrium probability vector $\mathbf{\pi}$ where beliefs remain unchanged over time.|
+
 ## L27: ML Foundations
 ### Confusion Matrix
 | Notation | Definition |

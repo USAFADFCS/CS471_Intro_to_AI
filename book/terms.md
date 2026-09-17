@@ -157,11 +157,11 @@ Deterministic Policy
 Diagnostic Inference
     A form of probabilistic inference where an agent reasons backward from observed downstream symptoms or sensor reports to infer the probability of unobserved upstream root causes ($P(\text{Cause} \mid \text{Effect})$).
 
-Discount Factor
-    A mathematical multiplier ($\gamma$) bounded between 0 and 1 used in reinforcement learning and MDPs to value near-term rewards more heavily than distant future rewards, ensuring that infinite operational loops converge to a finite mathematical value.
-
 Directed Acyclic Graph (DAG)
     A finite directed graph containing vertices and directed edges that has no directed cycles. That is, starting at any vertex and following the directed edges, one can never loop back to the same vertex.
+
+Discount Factor
+    A mathematical multiplier ($\gamma$) bounded between 0 and 1 used in reinforcement learning and MDPs to value near-term rewards more heavily than distant future rewards, ensuring that infinite operational loops converge to a finite mathematical value.
 
 Document Chunking
     The strategy of splitting massive text documents into smaller, overlapping segments (chunks) so they can be individually embedded, searched, and fit within an LLM's limited context window.
@@ -235,6 +235,9 @@ Filter (Kernel)
 Fine-Tuning
     An advanced form of transfer learning where the upper layers of a pre-trained neural network are "unfrozen" and trained on domain-specific data to adapt the model to new geometric realities (like shifting from ground-level to top-down satellite imagery).
 
+First-Order Markov Assumption
+    The assumption that the probability distribution of the current state $X_t$ depends strictly on the immediate preceding state $X_{t-1}$, and is conditionally independent of all earlier historical states ($X_0, X_1, \dots, X_{t-2}$).
+
 Follow-On Effects
     The downstream, cascading consequences of an agent's action in a sequential environment, often extending beyond the immediate state transition.
 
@@ -307,6 +310,9 @@ Inference Mechanism
 Informed Search
     A class of search algorithms that utilizes domain-specific knowledge (heuristics) to find solutions more efficiently than blind (uninformed) search methods.
 
+Initial State Distribution
+    The vector of prior probabilities $\mathbf{p}_0$ (or $\mathbf{\pi}_0$) that specifies the probability of a system starting in each possible discrete state at time step $t=0$.
+
 Instruct-Tuning
     The secondary training phase for LLMs where the model is fine-tuned on explicitly labeled prompt/response pairs. This transforms a base model into a highly obedient assistant capable of following specific tactical instructions.
 
@@ -355,11 +361,17 @@ Loss Function (Cost Function)
 Marginal Probability (Marginalization)
     The unconditional probability of an event obtained by summing (or integrating) the joint probability across all possible outcomes of all other random variables: $P(A) = \sum_b P(A, B=b)$.
 
+Markov Chain
+    A discrete-time stochastic process consisting of states and state transitions where the probability of the next state depends solely on the current state.
+
 Markov Decision Process (MDP)
     A mathematical framework for modeling decision-making in stochastic environments where outcomes are partly random and partly under the control of a decision-maker. It is defined by a set of states, actions, transition probabilities, and reward functions.
 
+Markov Model
+    A probabilistic model of a dynamic system that changes state over time, structured as a chain of random variables governed by the Markov property and stationary transition probabilities.
+
 Markov Property
-    The foundational assumption in MDPs that the future state depends strictly and solely on the current state and the current action taken, and is completely independent of the past sequence of events that led to the current state.
+    The foundational assumption in MDPs and Markov models that the future state depends strictly and solely on the current state (and current action if controlled), and is completely independent of the past sequence of events that led to the current state.
 
 Max Pooling
     A downsampling operation commonly used in CNNs that slides a window across a feature map, keeping only the most prominent signal (the maximum value) while discarding the rest. This reduces computational load and provides translation invariance.
@@ -370,13 +382,16 @@ Mean Squared Error (MSE)
 Minimax
     A foundational adversarial decision-making algorithm where one agent (MAX) attempts to maximize a tactical score, while the opposing agent (MIN) acts perfectly to minimize that same score.
 
+Multi-Step Transition Probability
+    The probability that a Markov system transitions from state $i$ to state $j$ over $k$ time steps, denoted as $P(X_{t+k} = j \mid X_t = i)$, computed as the $(i, j)$-th entry of the matrix power $T^k$.
+
 Naive Assumption (Independence Assumption)
     The core (and mathematically flawed) assumption in Naive Bayes that every feature in a dataset is completely independent of every other feature.
 
 Node
     A discrete point or data structure. In a state space graph, it represents a single physical configuration. In a search tree, it represents an entire path or plan taken from the start state. In a Bayesian network, it represents a random variable.
 
-Normalization Constant
+Normalization Constant ($\alpha$)
     A scalar multiplier $\alpha = \frac{1}{\sum_q P(Q=q, E=e)} = \frac{1}{P(E=e)}$ applied to an unnormalized joint distribution vector over query variable $Q$ to ensure the final posterior probabilities sum to exactly 1.0.
 
 Observation (ReAct)
@@ -517,6 +532,12 @@ State Space
 State-Value Function
     The expected return an agent will accumulate starting in state $s$ and strictly following policy $\pi$ until the episode terminates.
 
+Stationary Assumption (Time-Homogeneity)
+    The assumption in a dynamic probabilistic system that the conditional transition probabilities $P(X_{t+1} \mid X_t)$ remain constant across all time steps $t$, meaning the transition laws do not change over time.
+
+Stationary Distribution
+    A probability distribution vector $\mathbf{\pi}$ over states that remains invariant under the transition model, satisfying $\mathbf{\pi} = \mathbf{\pi} T$ and $\sum_i \pi_i = 1.0$.
+
 Stochastic Environment
     An environment where the outcomes of actions are not strictly deterministic; instead, actions have probabilistic results governed by chance (e.g., weather patterns, sensor degradation, or electronic warfare jamming success rates).
 
@@ -559,6 +580,9 @@ Transformer
 Transition Function
     The mathematically defined probability $P(s' \mid s,a)$ (or $T(s,a,s')$) that executing a specific action $a$ in a current state $s$ will successfully lead to the resulting state $s'$.
 
+Transition Matrix
+    A square matrix $T$ where row $i$ and column $j$ define the single-step conditional transition probability $T_{ij} = P(X_{t+1} = j \mid X_t = i)$, such that each row is non-negative and sums to exactly 1.0.
+
 Translation Invariance
     The ability of a neural network (particularly a CNN using pooling) to recognize a target regardless of where it physically shifted or moved within the camera frame.
 
@@ -594,4 +618,5 @@ Zero-Shot Prompting
 
 Zero-Sum Game
     A mathematical representation of a situation in adversarial search (like Minimax) where one agent's gain is exactly balanced by the opponent's loss.
+
 ```

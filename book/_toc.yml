@@ -64,6 +64,9 @@ parts:
     - file: lessons/21/bayesian_inference.md
       sections:
       - file: lessons/21/bayesian_inference_nb.ipynb
+    - file: lessons/22/markov_models.md
+      sections:
+      - file: lessons/22/markov_models_nb.ipynb
     - file: lessons/24/workshop_review.md
     - file: lessons/25/GR3.md
     - file: lessons/26/mlfoundations.md
@@ -140,6 +143,7 @@ parts:
     - file: exercises/L19.md
     - file: exercises/L20.md
     - file: exercises/L21.md
+    - file: exercises/L22.md
     - file: exercises/L26.md
     - file: exercises/L27.md
     - file: exercises/L28.md

@@ -165,6 +165,13 @@
                 </td>
             </tr>
             <tr>
+                <td><strong>16</strong></td>
+                <td>GR Review - Block 2</td>
+                <td colspan="2" class="text-center">
+                    <a href="9_gr_review.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-primary" role="button">Worksheet</a>
+                </td>
+            </tr>
+            <tr>
                 <td><strong>18</strong></td>
                 <td>Probability</td>
                 <td>
@@ -202,6 +209,16 @@
                 </td>
                 <td>
                     <a href="21_worksheet_solutions.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-primary" role="button">Solution</a>
+                </td>
+            </tr>
+            <tr>
+                <td><strong>22</strong></td>
+                <td>Morkov Models</td>
+                <td>
+                    <a href="22_worksheet.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-primary" role="button">Worksheet</a>
+                </td>
+                <td>
+                    <a href="22_worksheet_solutions.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-primary" role="button">Solution</a>
                 </td>
             </tr>
         </tbody>
