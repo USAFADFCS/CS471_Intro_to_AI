@@ -1,4 +1,4 @@
-# L21: Bayesian Inference
+# ☑️ L21: Bayesian Inference
 
 :::{admonition} Lesson Objectives
 :class: note

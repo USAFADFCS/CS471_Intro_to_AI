@@ -1,4 +1,4 @@
-# L38: ML Workshop - The 50-Minute Mission
+# ☑️ L38: ML Workshop - The 50-Minute Mission
 
 Today, you are stepping into the role of the AI Systems Integration Officer for a forward-deployed tactical operations center. You have 50 minutes to design, train, evaluate, and justify an AI system for immediate deployment.
 

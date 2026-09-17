@@ -1,4 +1,4 @@
-# L32: CNN Applications
+# ☑️ L32: CNN Applications
 
 In the previous lesson, we learned the mechanics of how Convolutional Neural Networks (CNNs) use sliding filters and pooling layers to understand spatial relationships. Now, we will explore how to operationalize these networks in the modern battlespace. We will look at how to fine-tune pre-trained vision models for satellite intelligence, evaluate their mistakes through the lens of mission risk, and balance the critical trade-offs between mathematical accuracy and processing speed on tactical edge hardware.
 
