@@ -11,14 +11,14 @@
 
 When deploying autonomous agents—such as unmanned aerial vehicles (UAVs) navigating contested airspace or cyber-defense algorithms securing tactical networks—the environment's exact dynamics are rarely known in advance. The agent must interact with the environment, observing the consequences of its actions to optimize its behavior over time. 
 
-### Objective 1: Compare Model-Based and Model-Free Learning
+### Compare Model-Based and Model-Free Learning
 
 When an agent plans its actions, it relies on either a known model or raw experience.
 
 *   **{term}`Model-Based Planning`:** Algorithms like Value Iteration (VI) and Policy Iteration (PI) rely on a completely known model of the environment. The agent knows the exact transition probabilities ($P(s'\vert{}s,a)$) and the reward function ($R$) in advance. By calculating all possible futures, the agent reasons over the outcomes before acting. 
 *   **{term}`Model-Free Learning`:** Q-learning occurs when the model is unknown. The transition probabilities fade into question marks. Instead of calculating probabilities, the agent acts, observes the results $(s,a,r,s')$, and updates its Q-values directly based on those actual outcomes. The agent interacts with the environment instead of requiring the full model in advance.
 
-### Objective 2: Interpret Learning from Experience
+### Interpret Learning from Experience
 
 In model-free learning, experience becomes the teacher. The learner does not see every possible result; it only sees what happened during a specific interaction. 
 
@@ -34,7 +34,7 @@ To gather these packets, the agent must balance two behaviors:
 
 The $\epsilon$-greedy strategy manages this tradeoff by mostly exploiting (with probability $1 - \epsilon$), while sometimes exploring (with probability $\epsilon$).
 
-### Objective 3: Explain Q-Learning, Target, and TD Error
+### Explain Q-Learning, Target, and TD Error
 
 A {term}`Q-Value` ($Q(s,a)$) estimates the long-term return associated with taking a specific action in a specific state. It is not a probability, nor is it just the immediate reward. 
 
@@ -53,7 +53,7 @@ $$\delta = Target - Q(s,a)$$
 
 #### 3. Update the Q-Value
 The new estimate moves the old estimate toward the target, controlled by the learning rate ($\alpha$). A large $\alpha$ gives the new experience more influence, while a small $\alpha$ changes the estimate cautiously.
-$$Q_{new} = Q(s,a) + \alpha (\delta)$$
+$Q_{new} = Q(s,a) + \alpha (\delta)$
 
 ```{mermaid}
 graph LR
@@ -92,7 +92,7 @@ Setting the correct $\epsilon$ value requires balancing a strict tradeoff:
 
 The full Q-learning update is a compact notation for a simple adjustment. The new estimate moves the old estimate toward the calculated target by combining all the individual components into a single equation:
 
-$$Q(s, a) \leftarrow Q(s, a) + \alpha [r + \gamma \max_{a'} Q(s', a') - Q(s, a)]$$
+$Q(s, a) \leftarrow Q(s, a) + \alpha [r + \gamma \max_{a'} Q(s', a') - Q(s, a)]$
 
 This equation can be broken down into four distinct conceptual steps to understand how the agent revises its beliefs:
 
@@ -106,7 +106,7 @@ This equation can be broken down into four distinct conceptual steps to understa
     *   *The proportional shift applied to the old belief, dictated by the learning rate ($\alpha$).*
 
 ## Summary Infographic
-![Markov Decision Process](../../figures/L15_Q-Learning_Algorithm_Infographic.png "Q-Learning Summary")
+![Q-learning](../../figures/q_learning.png "Q-Learning")
 
 ## Knowledge Check & Practice Exercises
 
