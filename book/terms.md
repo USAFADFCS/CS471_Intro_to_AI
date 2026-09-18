@@ -76,6 +76,9 @@ Bayes' Rule
 Bayesian Network
     A probabilistic graphical model that represents a set of random variables and their conditional dependencies via a directed acyclic graph (DAG). It decomposes a full joint probability distribution into local conditional probability distributions.
 
+Belief State (Filtering)
+    The probability distribution over the current state of a dynamical system conditioned on the entire history of observed emissions up to that time step: $B(X_t) = P(X_t \mid e_{1:t})$.
+
 Bias (Neural Networks)
     A learnable constant ($b$) added to a neuron's weighted sum. It acts as a baseline threshold, shifting the activation function left or right so the neuron can fire even if all input features are zero.
 
@@ -95,7 +98,7 @@ Cascading Hallucination
     A failure mode unique to multi-agent systems where one agent hallucinates a fact or capability, and other agents subsequently accept that hallucination as truth, rapidly derailing the entire workflow or simulation.
 
 Causal Inference
-    A form of probabilistic inference where an agent reasons forward from observed upstream causes to predict downstream effects, symptoms, or mission outcomes ($P(\text{Effect} \mid \text{Cause})$).
+    Probabilistic inference that flows in the direction of causal edges (from parent causes to child effects), evaluating $P(\text{Effect} \mid \text{Cause})$.
 
 Child (Bayesian Network)
     In a directed graph, a node that has an incoming directed edge pointing to it from another node (its parent). If $A \to B$, then $B$ is the child of $A$.
@@ -142,6 +145,9 @@ Decision Tree
 Decoder
     The second half of an Autoencoder that attempts to decompress the latent space bottleneck back into the original data format.
 
+Decoding (HMM)
+    The inferential task of determining the single most likely sequence of hidden states that generated an observed sequence of emissions: $\arg\max_{x_{1:t}} P(x_{1:t} \mid e_{1:t})$.
+
 Deep Learning
     A subset of machine learning utilizing neural networks with many hidden layers (deep architectures) capable of autonomously engineering complex, hierarchical features from raw, unstructured data (like images or RF signals).
 
@@ -155,7 +161,7 @@ Deterministic Policy
     A policy that maps each specific state to exactly one single, definitive action.
 
 Diagnostic Inference
-    A form of probabilistic inference where an agent reasons backward from observed downstream symptoms or sensor reports to infer the probability of unobserved upstream root causes ($P(\text{Cause} \mid \text{Effect})$).
+    Probabilistic inference that flows against the direction of causal edges (from observed symptoms/effects back to hidden causes), evaluating $P(\text{Cause} \mid \text{Effect})$.
 
 Directed Acyclic Graph (DAG)
     A finite directed graph containing vertices and directed edges that has no directed cycles. That is, starting at any vertex and following the directed edges, one can never loop back to the same vertex.
@@ -178,6 +184,9 @@ Early Stopping
 Edge Device
     A lightweight, low-power hardware payload (like a drone's onboard computer) capable of processing neural network inference locally without requiring a connection to a centralized cloud server.
 
+Emission Model (Sensor Model)
+    In a Hidden Markov Model, the conditional probability distribution defining the likelihood of observing a particular evidence symbol given the true hidden state: $P(E_t \mid X_t)$.
+
 Encoder
     The first half of an Autoencoder that compresses raw input data down into a mathematically dense bottleneck.
 
@@ -185,7 +194,7 @@ Epoch
     One complete pass of the entire training dataset through the neural network during the training phase.
 
 Evidence Variable
-    A random variable in a Bayesian network whose exact outcome has been observed or measured (e.g., $E = e$), serving as the condition upon which posterior beliefs are updated.
+    A variable in a probabilistic model whose value has been directly observed or measured by sensors ($E = e$).
 
 Expected Return ($G$)
     The cumulative sum of all discounted future rewards an agent expects to accumulate starting from a given time step.
@@ -201,12 +210,6 @@ Expert System
 
 Explainable AI (XAI)
     A field of research and a set of mathematical tools (like SHAP) designed to make the internal mechanics and outputs of "black box" machine learning models understandable to human operators, ensuring trust and traceability.
-
-Exploitation
-    Choosing the current highest-Q action (the greedy action) to maximize performance using what has been learned
-
-Exploration
-    Deliberately sampling alternative actions to discover potentially better outcomes.
 
 F1-Score
     The harmonic mean of Precision and Recall. It provides a single, balanced mathematical metric to evaluate a model's performance, especially when dealing with highly imbalanced datasets.
@@ -238,14 +241,17 @@ FIFO (First-In, First-Out) Queue
 Filter (Kernel)
     A small grid of learnable weights used in a CNN that slides across an image to detect specific patterns, such as horizontal lines or color gradients.
 
+Filtering (Monitoring)
+    The process of computing the belief distribution over the current hidden state given all historical observations up to the present moment: $P(X_t \mid e_{1:t})$.
+
 Fine-Tuning
     An advanced form of transfer learning where the upper layers of a pre-trained neural network are "unfrozen" and trained on domain-specific data to adapt the model to new geometric realities (like shifting from ground-level to top-down satellite imagery).
 
-First-Order Markov Assumption
-    The assumption that the probability distribution of the current state $X_t$ depends strictly on the immediate preceding state $X_{t-1}$, and is conditionally independent of all earlier historical states ($X_0, X_1, \dots, X_{t-2}$).
-
 Follow-On Effects
     The downstream, cascading consequences of an agent's action in a sequential environment, often extending beyond the immediate state transition.
+
+Forward Algorithm (Filtering)
+    A dynamic programming algorithm for HMMs that recursively computes the filtered belief state by alternating between a time prediction step and an observation update step.
 
 Forward Propagation
     The process of pushing raw input data forward through the hidden layers of a neural network to generate a final prediction. It involves calculating the weighted sums and applying activation functions at each neuron in the sequence.
@@ -289,8 +295,14 @@ Heuristic
 Hidden Layer
     A layer of artificial neurons situated between the input and output layers of a neural network. These layers are responsible for learning abstract, hidden features in the data.
 
+Hidden Markov Model (HMM)
+    A temporal probabilistic model where the underlying system state evolves according to a Markov process but is unobservable (hidden), generating noisy observable emissions at each time step.
+
+Hidden State
+    An unobserved internal state variable ($X_t$) in an HMM that cannot be directly perceived, requiring probabilistic inference from observable emissions.
+
 Hidden Variable
-    An unobserved variable in a probabilistic model that is neither queried nor directly instantiated as evidence, requiring its values to be summed out (marginalized) during inference.
+    A variable in a probabilistic system that is neither an explicit query nor an observed piece of evidence, which must be summed out (marginalized) during inference.
 
 Hierarchical Feature Learning
     The process by which deep neural networks autonomously learn simple concepts (like lines and edges) in early layers and mathematically combine them into complex tactical concepts (like vehicles or radar structures) in deeper layers.
@@ -305,7 +317,7 @@ Inference
     The phase in an AI pipeline where a trained model or logic system applies its learned rules to new, unseen data to generate a prediction or decision.
 
 Inference by Enumeration
-    An exact algorithm for computing the posterior distribution over query variables in a Bayesian network by summing terms over all possible combinations of hidden variables using the network's factored joint distribution.
+    An exact algorithm for answering probabilistic queries in a Bayesian network by expanding the joint distribution via graph factorization and summing out all hidden variables.
 
 Inference Latency
     The time it takes for a deployed neural network to process a single input (like a video frame) and output a prediction. Critical for autonomous edge devices tracking fast-moving targets.
@@ -315,9 +327,6 @@ Inference Mechanism
 
 Informed Search
     A class of search algorithms that utilizes domain-specific knowledge (heuristics) to find solutions more efficiently than blind (uninformed) search methods.
-
-Initial State Distribution
-    The vector of prior probabilities $\mathbf{p}_0$ (or $\mathbf{\pi}_0$) that specifies the probability of a system starting in each possible discrete state at time step $t=0$.
 
 Instruct-Tuning
     The secondary training phase for LLMs where the model is fine-tuned on explicitly labeled prompt/response pairs. This transforms a base model into a highly obedient assistant capable of following specific tactical instructions.
@@ -368,16 +377,13 @@ Marginal Probability (Marginalization)
     The unconditional probability of an event obtained by summing (or integrating) the joint probability across all possible outcomes of all other random variables: $P(A) = \sum_b P(A, B=b)$.
 
 Markov Chain
-    A discrete-time stochastic process consisting of states and state transitions where the probability of the next state depends solely on the current state.
+    A discrete-time stochastic process that satisfies the Markov property, where the probability of transitioning to the next state depends solely on the current state.
 
 Markov Decision Process (MDP)
     A mathematical framework for modeling decision-making in stochastic environments where outcomes are partly random and partly under the control of a decision-maker. It is defined by a set of states, actions, transition probabilities, and reward functions.
 
-Markov Model
-    A probabilistic model of a dynamic system that changes state over time, structured as a chain of random variables governed by the Markov property and stationary transition probabilities.
-
 Markov Property
-    The foundational assumption in MDPs and Markov models that the future state depends strictly and solely on the current state (and current action if controlled), and is completely independent of the past sequence of events that led to the current state.
+    The foundational assumption in temporal and sequential models that the future state depends strictly and solely on the current state and the current action taken, and is completely independent of the past sequence of events that led to the current state.
 
 Max Pooling
     A downsampling operation commonly used in CNNs that slides a window across a feature map, keeping only the most prominent signal (the maximum value) while discarding the rest. This reduces computational load and provides translation invariance.
@@ -388,15 +394,6 @@ Mean Squared Error (MSE)
 Minimax
     A foundational adversarial decision-making algorithm where one agent (MAX) attempts to maximize a tactical score, while the opposing agent (MIN) acts perfectly to minimize that same score.
 
-Model-Based Planning
-    Algorithms like Value Iteration (VI) and Policy Iteration (PI) that rely on a completely known model of the environment.
-
-Model-Free Learning
-    Learning that occurs when the model is unknown - Q learning.
-
-Multi-Step Transition Probability
-    The probability that a Markov system transitions from state $i$ to state $j$ over $k$ time steps, denoted as $P(X_{t+k} = j \mid X_t = i)$, computed as the $(i, j)$-th entry of the matrix power $T^k$.
-
 Naive Assumption (Independence Assumption)
     The core (and mathematically flawed) assumption in Naive Bayes that every feature in a dataset is completely independent of every other feature.
 
@@ -404,7 +401,10 @@ Node
     A discrete point or data structure. In a state space graph, it represents a single physical configuration. In a search tree, it represents an entire path or plan taken from the start state. In a Bayesian network, it represents a random variable.
 
 Normalization Constant ($\alpha$)
-    A scalar multiplier $\alpha = \frac{1}{\sum_q P(Q=q, E=e)} = \frac{1}{P(E=e)}$ applied to an unnormalized joint distribution vector over query variable $Q$ to ensure the final posterior probabilities sum to exactly 1.0.
+    A scaling factor (equal to $\frac{1}{\sum P}$) multiplied by an unnormalized joint probability distribution to guarantee that the resulting posterior probabilities sum to exactly 1.0.
+
+Observation (Emission)
+    The measurable signal, sensor reading, or feature value generated by a physical system at time step $t$ according to its emission model.
 
 Observation (ReAct)
     The step in the ReAct loop where the result of an external tool call is returned and injected back into the agent's context window, allowing the agent to evaluate the outcome of its action.
@@ -460,9 +460,6 @@ Prior Probability
 Priority Queue
     A data structure that manages nodes based on a specific numerical priority rather than the order they were inserted. In Uniform Cost Search, nodes are prioritized strictly by the lowest cumulative path cost.
 
-Probabilistic Inference
-    The process of calculating the posterior probability distribution over a set of query variables given observed evidence variables by evaluating a probabilistic model.
-
 Probability Distribution
     A mathematical function or table that assigns a probability to every possible mutually exclusive outcome or state in an entire sample space, such that all assigned probabilities are non-negative and sum to exactly 1.0.
 
@@ -476,7 +473,7 @@ Prompt Injection
     A failure mode or cyber attack where malicious input is designed to bypass an LLM's safety filters, causing it to ignore its original system instructions and execute an unauthorized command.
 
 Query Variable
-    The target random variable in a probabilistic model whose posterior probability distribution is to be calculated given observed evidence.
+    A variable in a probabilistic graphical model whose posterior probability distribution is to be calculated given observed evidence ($Q$).
 
 Random Forest
     A powerful ensemble model that builds hundreds of shallow Decision Trees and averages their predictions to achieve high accuracy while avoiding the overfitting trap of single trees.
@@ -529,6 +526,9 @@ Short-Term Memory (Agentic)
 Sigmoid Function
     A mathematical function that squashes any real number into a valid probability value bounded strictly between 0.0 and 1.0.
 
+Smoothing (HMM)
+    The inferential task of computing a distribution over a past hidden state given evidence accumulated up to a later time step: $P(X_k \mid e_{1:t})$ where $k < t$.
+
 Software Agent
     An AI program that lacks physical actuators and exists entirely digitally, calculating results or taking actions based purely on data inputs.
 
@@ -543,12 +543,6 @@ State Space
 
 State-Value Function
     The expected return an agent will accumulate starting in state $s$ and strictly following policy $\pi$ until the episode terminates.
-
-Stationary Assumption (Time-Homogeneity)
-    The assumption in a dynamic probabilistic system that the conditional transition probabilities $P(X_{t+1} \mid X_t)$ remain constant across all time steps $t$, meaning the transition laws do not change over time.
-
-Stationary Distribution
-    A probability distribution vector $\mathbf{\pi}$ over states that remains invariant under the transition model, satisfying $\mathbf{\pi} = \mathbf{\pi} T$ and $\sum_i \pi_i = 1.0$.
 
 Stochastic Environment
     An environment where the outcomes of actions are not strictly deterministic; instead, actions have probabilistic results governed by chance (e.g., weather patterns, sensor degradation, or electronic warfare jamming success rates).
@@ -592,8 +586,8 @@ Transformer
 Transition Function
     The mathematically defined probability $P(s' \mid s,a)$ (or $T(s,a,s')$) that executing a specific action $a$ in a current state $s$ will successfully lead to the resulting state $s'$.
 
-Transition Matrix
-    A square matrix $T$ where row $i$ and column $j$ define the single-step conditional transition probability $T_{ij} = P(X_{t+1} = j \mid X_t = i)$, such that each row is non-negative and sums to exactly 1.0.
+Transition Model (HMM)
+    The conditional distribution specifying the probability of transitioning from one hidden state to another across consecutive time steps: $P(X_t \mid X_{t-1})$.
 
 Translation Invariance
     The ability of a neural network (particularly a CNN using pooling) to recognize a target regardless of where it physically shifted or moved within the camera frame.
@@ -619,6 +613,9 @@ Vector Database
 Vector Embeddings
     A dense array of floating-point numbers representing the core semantic meaning of a piece of text (or image), allowing algorithms to measure the "distance" or similarity between distinct concepts mathematically.
 
+Viterbi Algorithm
+    A dynamic programming algorithm for finding the most likely sequence of hidden states (the Viterbi path) that results in a sequence of observed emissions in an HMM.
+
 Weights
     The learnable parameters ($w_i$) in a neural network that determine the importance or influence of a specific input feature on the final prediction.
 
@@ -630,5 +627,4 @@ Zero-Shot Prompting
 
 Zero-Sum Game
     A mathematical representation of a situation in adversarial search (like Minimax) where one agent's gain is exactly balanced by the opponent's loss.
-
 ```

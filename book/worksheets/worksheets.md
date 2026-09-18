@@ -221,6 +221,16 @@
                     <a href="22_worksheet_solutions.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-primary" role="button">Solution</a>
                 </td>
             </tr>
+                        <tr>
+                <td><strong>23</strong></td>
+                <td>Hidden Morkov Models</td>
+                <td>
+                    <a href="23_worksheet.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-primary" role="button">Worksheet</a>
+                </td>
+                <td>
+                    <a href="23_worksheet_solutions.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-primary" role="button">Solution</a>
+                </td>
+            </tr>
         </tbody>
     </table>
 </div>

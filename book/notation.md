@@ -148,6 +148,21 @@ While L1 is primarily conceptual, the evaluation of an agent's performance relie
 | $P(X_2 = j) = \sum_{i=1}^N P(X_2 = j \mid X_1 = i) P(X_1 = i)$ | Mini-Forward Marginalization | Step-by-step marginalization over intermediate hidden state $X_1$.|
 | $\mathbf{\pi} = \mathbf{\pi} T, \quad \sum_{i=1}^N \pi_i = 1.0$ | {term}`Stationary Distribution` | Invariant long-run equilibrium probability vector $\mathbf{\pi}$ where beliefs remain unchanged over time.|
 
+
+## L23: Hidden Markov Models
+### Temporal Models & Hidden Markov Models (HMMs)
+| Notation | Definition |
+| --- | --- |
+| $X_t$ | Unobserved/hidden system state at discrete time step $t \in \{0, 1, 2, \dots\}$.|
+|   $E_t$ or $e_t$ | Observable emission or evidence reading captured at discrete time step $t$.|
+|   $e_{1:t}$ | Sequence of evidence observed from step $1$ through step $t$: $\{e_1, e_2, \dots, e_t\}$.|
+|  $T(i, j) = P(X_t = j \mid X_{t-1} = i)$ | State transition model between consecutive hidden states.|
+|   $O(X_t, e_t) = P(E_t = e_t \mid X_t)$ | Emission (sensor) model evaluating evidence likelihood.|
+|   $B(X_t) = P(X_t \mid e_{1:t})$ | Filtered belief state at time $t$ conditioned on all evidence up to $t$.|
+|   $\bar{B}(X_t) = P(X_t \mid e_{1:t-1})$ | Predicted belief state at time $t$ before incorporating evidence $e_t$.|
+|   $\alpha$ | Normalization constant ensuring $\sum_{x_t} B(x_t) = 1.0$.|
+|   $v_t(j) = \max_{x_{1:t-1}} P(x_{1:t-1}, X_t = j, e_{1:t})$ | Maximal probability path (Viterbi trellis score).|
+
 ## L27: ML Foundations
 ### Confusion Matrix
 | Notation | Definition |

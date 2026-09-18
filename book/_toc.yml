@@ -67,6 +67,9 @@ parts:
     - file: lessons/22/markov_models.md
       sections:
       - file: lessons/22/markov_models_nb.ipynb
+    - file: lessons/23/hmm.md
+      sections:
+      - file: lessons/23/hmm_nb.ipynb
     - file: lessons/24/workshop_review.md
     - file: lessons/25/GR3.md
     - file: lessons/26/mlfoundations.md
