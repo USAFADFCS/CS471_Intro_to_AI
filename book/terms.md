@@ -202,6 +202,12 @@ Expert System
 Explainable AI (XAI)
     A field of research and a set of mathematical tools (like SHAP) designed to make the internal mechanics and outputs of "black box" machine learning models understandable to human operators, ensuring trust and traceability.
 
+Exploitation
+    Choosing the current highest-Q action (the greedy action) to maximize performance using what has been learned
+
+Exploration
+    Deliberately sampling alternative actions to discover potentially better outcomes.
+
 F1-Score
     The harmonic mean of Precision and Recall. It provides a single, balanced mathematical metric to evaluate a model's performance, especially when dealing with highly imbalanced datasets.
 
@@ -381,6 +387,12 @@ Mean Squared Error (MSE)
 
 Minimax
     A foundational adversarial decision-making algorithm where one agent (MAX) attempts to maximize a tactical score, while the opposing agent (MIN) acts perfectly to minimize that same score.
+
+Model-Based Planning
+    Algorithms like Value Iteration (VI) and Policy Iteration (PI) that rely on a completely known model of the environment.
+
+Model-Free Learning
+    Learning that occurs when the model is unknown - Q learning.
 
 Multi-Step Transition Probability
     The probability that a Markov system transitions from state $i$ to state $j$ over $k$ time steps, denoted as $P(X_{t+k} = j \mid X_t = i)$, computed as the $(i, j)$-th entry of the matrix power $T^k$.
