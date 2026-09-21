@@ -168,7 +168,7 @@
                 <td><strong>16</strong></td>
                 <td>GR Review - Block 2</td>
                 <td colspan="2" class="text-center">
-                    <a href="9_gr_review.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-primary" role="button">Worksheet</a>
+                    <a href="16_GR2_review_v4.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-primary" role="button">Worksheet</a>
                 </td>
             </tr>
             <tr>
