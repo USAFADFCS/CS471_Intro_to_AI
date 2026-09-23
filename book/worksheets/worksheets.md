@@ -172,7 +172,7 @@
                     <a href="block2_worksheet.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-primary" role="button">Worksheet</a>
                 </td>
                 <td>
-                    <a href="block2_worksheet_solutions_v2.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-primary" role="button">Solution</a>
+                    <a href="block2_worksheet_solutions.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-primary" role="button">Solution</a>
                 </td>
             </tr>
             <tr>
