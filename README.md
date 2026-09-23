@@ -1,73 +1,48 @@
-# Your first TeachBook using the GitHub template
+# CS471 Artificial Intelligence: Interactive Course Curriculum
 
-The template allows you to start your own TeachBook and hosting that TeachBook online without knowledge on Git, the Jupyter book / TeachBook package, python, conda and webservers. It doesn't provide full documentation on the functionalities. Please look at our manual (https://teachbooks.io/manual) to find more about that!
+This repository contains the complete Teachbooks-powered curriculum for CS471. The materials are designed to bridge core AI theory with tactical military applications, moving students from deterministic search algorithms to reinforcement learning and probabilistic reasoning under the "fog of war."
 
-## How to get started
+The content is written in MyST Markdown and compiled via Jupyter Book/Teachbooks to provide an interactive, accessible, and highly structured learning environment.
 
-How to use the template is demonstrated in the figure below, all steps are elaborated on in the following step-by-step tutorial.
+## Curriculum Components
 
-![Demonstration for a public repository](https://github.com/TeachBooks/template_figures/blob/main/teachbooks-template.gif?raw=true)
-Video available [here](https://youtu.be/nN3Oi_MVvF0)
+The repository is structured to support both independent study and instructor-led classroom engagement.
 
-1. To get started making your TeachBook with our functionalities, use the [template TeachBook](https://github.com/TeachBooks/main/template) as template:
+* **Textbook Chapters (`/lessons/`)**: The core instructional material. Each lesson integrates foundational AI math with military scenarios (e.g., UAV navigation, cyber-defense, electronic warfare). Chapters include Mermaid.js diagrams for state spaces and transition models.
+* **Knowledge Checks & Practice Exercises**: Embedded directly at the end of each lesson. These feature step-by-step mathematical breakdowns hidden behind interactive HTML `<details>` tags, allowing students to attempt the problem before revealing the solution.
+* **Master Glossary (`master_glossary.md`)**: A centralized MyST `{glossary}` defining all conceptual and tactical terminology. Terms throughout the textbook are hyperlinked back to this file using the `{term}` role.
+* **Notation Reference (`notations.md`)**: A dedicated cheat sheet for the mathematical symbology used across the course, ensuring consistency when transitioning between Markov Decision Processes, Q-Learning, and Hidden Markov Models.
+* **Python Labs (`/labs/`)**: Standalone Markdown-based Jupyter Notebooks. These bridge the theoretical math with computational implementation, walking students through building AI engines (e.g., online HMM filtering, Q-learning loops) using standard Python libraries.
+* **Printable Worksheets (`/worksheets/`)**: LaTeX-formatted handouts designed for in-class guided practice.
+* **Instructor Solution Keys (`/solutions/`)**: Companion LaTeX files for all worksheets. These feature fully worked mathematical proofs and tactical interpretations formatted in shaded `tcolorbox` environments for easy grading and review.
 
-![Use template](https://github.com/TeachBooks/template_figures/blob/main/use_template.png?raw=true)
+## How to Use This Textbook (Student Guide)
 
-2. Fill in a repository name, this name will be used in the future url of your book:
+To achieve conceptual mastery rather than rote memorization, engage with the lesson materials in the following sequence:
 
-![Create new repository](https://github.com/TeachBooks/template_figures/blob/main/create_new_repository.png?raw=true)
+1. **Read the Lesson Chapter:** Focus on the tactical scenarios and the step-by-step breakdown of the core equations. Click on highlighted `{term}` links if you need to refresh a definition from previous blocks.
+2. **Attempt the Embedded Exercises:** At the bottom of each chapter, complete the practice exercises on scratch paper *before* clicking "Show solution." The step-by-step breakdowns will help you identify exactly where your math or logic deviated.
+3. **Execute the Python Lab:** Review the lesson's corresponding Python lab to see how the mathematical formulas translate into code. Focus heavily on the "Interpreting the Results" sections to understand the tactical "why" behind the code's output.
+4. **Complete the Independent Practice Worksheets:** Use the provided LaTeX worksheets to simulate the Graded Review (GR) environment. The formatting, notation, and problem structures on these worksheets strictly mirror what you will encounter on exams.
 
-3. You can choose for `Private` only if you've GitHub Pro, GitHub Team, GitHub Enterprise Cloud, or GitHub Enterprise Server. Otherwise, you won't be able to publish your TeachBook online. Furthermore, it prevents people from contributing to your book, making your book essentially 'closed' instead of 'open'. Note that the built book website is always public.
+## Build Instructions
 
-4. You need to activate GitHub pages so that your website is published to the internet. As long as you don't do this your TeachBook is not published online. Actually, now that you've taken this template our workflow tries to publish it to GitHub pages, which you didn't have the chance to activate yet. That's why you probably received an email with 'call-deploy-book: Some jobs were not successful' and you see the failed job under `Initial commit`. You can activate GitHub pages by setting the source for GitHub pages to GitHub Actions under `Settings` - `Pages` - `Build and deployment` - `Source` - `GitHub Actions`:
+This repository requires the Teachbooks environment to compile the interactive web version of the text.
 
-![Activate GitHub Pages](https://github.com/TeachBooks/template_figures/blob/main/set_up_pages.png?raw=true)
+1. Install the required dependencies:
+```bash
+pip install -r requirements.txt
 
-5. Now checkout the progress of the publishing workflow under `Actions` - `All workflows` -  `call-deploy-book` -`<the most recent workflow run>`. The first commit which is there might have failed because GitHub Pages wasn't activated at the time of `Initial commit`. Re-run that job from `Actions` - `All workflows` - `call-deploy-book` - `Initial commit` - `Re-run all jobs` - `Re-run jobs`:
+```
 
-![Action](https://github.com/TeachBooks/template_figures/blob/main/action_re-run.jpeg?raw=true)
 
-6. When the workflow has finished, visit your build TeachBook at `https://<username or organiszation_name>.github.io/<repository_name>` (case sensitive). For our example it is [https://dummydocent.github.io/test_book_from_template/](https://dummydocent.github.io/test_book_from_template/) for the shown repository. These links are visible in the action's summary as well, as shown in the figure of step 4.
+2. Build the book locally:
+```bash
+jb build .
 
-7. Want to get started directly? Your book contains a few exercises to get your started! Visit `https://<username or organiszation_name>.github.io/<repository_name>/exercises/exercises` (case sensitive) to get started with the first ones to get the basics of how to interact with your book on GitHub.
+```
 
-![exercises](https://github.com/TeachBooks/template_figures/blob/main/exercises.png?raw=true)
 
-Additional tip: 
-Set the repository website as your GitHub Pages website under `Code`- `About` - `Settings icon` - `Website` - `Use your GitHub Pages Website`
+3. Open `_build/html/index.html` in your browser to view the compiled textbook.
 
-![GitHub pages as website](https://github.com/TeachBooks/template_figures/blob/main/use_github_pages_website.png?raw=true)
-
-## Features
-- A github repository structure  (`/book`) for making a TeachBook: a [Jupyter Book v1](https://github.com/executablebooks/jupyter-book) for educational purposes
-- An empty TeachBook containing an intro page on root, an example markdown page, an example jupyter notebook page, an example references page. and an example credits page. (`/book/_toc.yml`, `/book/_config.yml`, `/book/credits.md`, `/book/intro.md`, `/book/references.md`, `/book/some_content/overview.md`, `/book/some_content/text_and_code.ipynb`)
-- A file ready for adding references (`references.bib`, `/book/references.md`)
-- An example favicon (web browser icon) (`/book/figures/favicon.ico`, `book/_config.yml`.)
-- An example logo (`/book/figures/TUDelft_logo_rgb.png`, `/book/config.yml`)
-- The configuration files set ready to make your Jupyter Notebooks pages work with [live code using our sphinx-thebe extension](https://teachbooks.io/manual/features/live_code.html) and our recommended settings (`/book/config.yml`)
-- An example of setting up preprocessing your table of contents to hide certain draft chapters for eg. students (`_toc.yml`)
-- A file containing all the recommended software packages (`requirements.txt`)
-- A file containing the recommended license CC BY 4.0 (`LICENSE.md`)
-- Our [GitHub workflow for publishing your TeachBook to GitHub Pages](https://github.com/TeachBooks/deploy-book-workflow) (`.github/workflow/call-deploy-book.yml`)
-- A gitignore file containing standard python filetype to ignore (`.gitignore`)
-- A readme containing information how to use the template, which can adjusted after using the template (`README.md`)
-
-## Contribute
-This tool's repository is stored on [GitHub](https://github.com/TeachBooks/template). The `README.md` of the branch `manual_description` is also part of the [TeachBooks manual](https://teachbooks.io/manual/external/template/README.html) as a submodule. If you'd like to contribute, you can create a fork and open a pull request on the [GitHub repository](https://github.com/TeachBooks/template). To update the `README.md` shown in the TeachBooks manual, create a fork and open a merge request for the [GitHub repository of the manual](https://github.com/TeachBooks/manual). If you intent to clone the manual including its submodules, clone using: `git clone --recurse-submodulesgit@github.com:TeachBooks/manual.git`.
-
-## Template README
-> Remove all of the above after you've taken this template and followed the instructions. The following lines are a template for your own README
-
-# `<Book title>`
-
-`<description of book's content en target audience>`
-
-## Contributors
-- `<list authors>`
-
-## Reuse content
-Feel free to reuse this content or contribute to it. Please give appropriate credit, provide a link to the license, and indicate if changes were made ([CC BY 4.0 License](https://creativecommons.org/licenses/by/4.0/))
-
-The website (`<book_website_url>`) is created using the [TeachBooks](https://teachbooks.io/). To recreate it you have two options (more information in the [TeachBooks manual](https://teachbooks.io/manual/):
-- In the GitHub interface: fork this repository, enable Github Pages from the source GitHub actions (Settings - Code and automation - Pages - Build and deployment - Source - GitHub Actions), enable workflows (Actions - I understand my workflows, go ahead and enable them) and run the call-deploy-book workflow (Actions - call-deploy-book - Run workflow - Run workflow). The website is released on the URL as shown on the workflow summary when the workflow has finished (Actions - call-deploy-book - call-deploy-book - Summary).
-- On your own computer: clone this repository, install the required packages (`pip install -r requirements.txt`) and build the book (`teachbooks build book`). The website is stored locally in `book/_build/index.html`.
+If you are modifying the LaTeX worksheets or solution keys, use standard `pdflatex` or an editor like Overleaf to compile the PDFs for classroom distribution.
