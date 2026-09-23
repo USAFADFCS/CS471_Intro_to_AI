@@ -111,7 +111,7 @@
                 <td><strong>9</strong></td>
                 <td>GR Review - Block 1</td>
                 <td colspan="2" class="text-center">
-                    <a href="9_gr_review.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-primary" role="button">Worksheet</a>
+                    <a href="9_gr_review.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-primary" role="button">Review</a>
                 </td>
             </tr>
             <tr>
@@ -167,8 +167,12 @@
             <tr>
                 <td><strong>16</strong></td>
                 <td>GR Review - Block 2</td>
-                <td colspan="2" class="text-center">
-                    <a href="16_GR2_review_v4.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-primary" role="button">Worksheet</a>
+                <td>
+                    <a href="16_GR2_review_v4.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-primary" role="button">Review</a>
+                    <a href="block2_worksheet.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-primary" role="button">Worksheet</a>
+                </td>
+                <td>
+                    <a href="block2_worksheet_solutions_v2.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-primary" role="button">Solution</a>
                 </td>
             </tr>
             <tr>
@@ -229,6 +233,17 @@
                 </td>
                 <td>
                     <a href="23_worksheet_solutions.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-primary" role="button">Solution</a>
+                </td>
+            </tr>
+            <tr>
+                <td><strong>24</strong></td>
+                <td>GR Review - Block 3</td>
+                <td>
+                    <a href="16_GR2_review_v4.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-primary" role="button">Review</a>
+                    <a href="block3_worksheet.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-primary" role="button">Worksheet</a>
+                </td>
+                <td>
+                    <a href="block3_worksheet_solutions.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-primary" role="button">Solution</a>
                 </td>
             </tr>
         </tbody>
