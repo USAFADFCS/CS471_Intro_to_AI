@@ -41,6 +41,7 @@
     <a href="https://github.com/USAFADFCS/CS471_Intro_to_AI/tree/main/slides/" target="_blank" rel="noopener noreferrer" class="btn btn-primary" role="button">
         Link to Lecture Slides
     </a>
+    <a href="471_Final_Project_Guide.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-primary" role="button"> Final Project Guide </a>
 </div>
 
 ---
@@ -110,8 +111,12 @@
             <tr>
                 <td><strong>9</strong></td>
                 <td>GR Review - Block 1</td>
-                <td colspan="2" class="text-center">
+                <td>
                     <a href="9_gr_review.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-primary" role="button">Review</a>
+                    <a href="block1_worksheet.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-primary" role="button">Worksheet</a>
+                </td>
+                <td>
+                    <a href="block1_worksheet_solutions.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-primary" role="button">Solution</a>
                 </td>
             </tr>
             <tr>
@@ -239,7 +244,7 @@
                 <td><strong>24</strong></td>
                 <td>GR Review - Block 3</td>
                 <td>
-                    <a href="16_GR2_review_v4.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-primary" role="button">Review</a>
+                    <a href="16_GR2_review_v4.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-primary disabled" role="button">Review</a>
                     <a href="block3_worksheet.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-primary" role="button">Worksheet</a>
                 </td>
                 <td>
