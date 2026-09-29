@@ -40,8 +40,9 @@
 <div style="margin-bottom: 20px;">
     <a href="https://github.com/USAFADFCS/CS471_Intro_to_AI/tree/main/slides/" target="_blank" rel="noopener noreferrer" class="btn btn-primary" role="button">
         Link to Lecture Slides
-    </a>
-    <a href="471_Final_Project_Guide.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-primary" role="button"> Final Project Guide </a>
+    </a> 
+    <a href="471_Final_Project_Guide.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-primary" role="button"> Final Project Guide </a> 
+    <a href="471_Final_Project_Rubric.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-primary" role="button"> Final Project Rubric </a>
 </div>
 
 ---
@@ -249,6 +250,33 @@
                 </td>
                 <td>
                     <a href="block3_worksheet_solutions.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-primary" role="button">Solution</a>
+                </td>
+            </tr>
+            <tr>
+                <td><strong>26-27</strong></td>
+                <td>ML Foundations & Naive Bayes Classification</td>
+                <td>
+                    <a href="q7_studyguide.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-primary" role="button">Study Guide</a>
+                </td>
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <td><strong>28-31</strong></td>
+                <td>ML FoundationNeural Networks, Deep Learning & CNNs</td>
+                <td>
+                    <a href="q8_studyguide.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-primary" role="button">Study Guide</a>
+                </td>
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <td><strong>32-37</strong></td>
+                <td>CNN Applications, LLMs, RAG, Ethics, & Agentic AI</td>
+                <td>
+                    <a href="q9_studyguide.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-primary" role="button">Study Guide</a>
+                </td>
+                <td>
                 </td>
             </tr>
         </tbody>
