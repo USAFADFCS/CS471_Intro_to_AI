@@ -245,7 +245,7 @@
                 <td><strong>24</strong></td>
                 <td>GR Review - Block 3</td>
                 <td>
-                    <a href="16_GR2_review_v4.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-primary disabled" role="button">Review</a>
+                    <a href="cs471_module3_studyguide.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-primary" role="button">Review</a>
                     <a href="block3_worksheet.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-primary" role="button">Worksheet</a>
                 </td>
                 <td>
