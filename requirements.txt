@@ -17,7 +17,7 @@ pandas
 keras
 pydot
 graphviz
-sentence_transformers
-chromadb
+#sentence_transformers
+#chromadb
 shap
 seaborn
