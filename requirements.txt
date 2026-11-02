@@ -21,3 +21,4 @@ graphviz
 #chromadb
 shap
 seaborn
+six
