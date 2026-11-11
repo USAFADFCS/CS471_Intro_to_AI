@@ -14,7 +14,7 @@ Action
     A specific, localized possibility for an agent to move to another state or manipulate its environment (e.g., move North, fire thruster, block IP).
 
 Action (ReAct)
-    The step in the ReAct loop where the agent executes a specific, structured tool call (e.g., querying a database or calling an API) to interact with the external environment.
+    The step in the ReAct loop where the agent requests a specific, structured tool call (a tool name and its arguments). The application's code, not the model, validates and executes the call.
 
 Action-Value Function
     The mathematical expected return achieved after taking a specific action $a$ in state $s$, and then strictly following policy $\pi$ for all subsequent steps. It is used to directly compare different actions available in the same state.
@@ -26,13 +26,13 @@ Adam (Optimizer)
     A widely used variant of gradient descent that combines momentum (a running average of recent gradients) with a separate, adaptive step size for each weight. It is the common default optimizer for training deep networks.
 
 Adjudicator Agent
-    In multi-agent wargaming, an impartial referee AI that receives proposed actions from competing agents (Red/Blue teams), evaluates them against simulated physical rules or probabilities, and updates the shared environment.
+    In multi-agent wargaming, the component that receives proposed actions from competing agents (such as Red and Blue), checks them against the rules, determines outcomes, and updates the shared simulation state. Best implemented as a deterministic rules or physics engine in code, possibly assisted by an LLM, so that the simulation's facts are checkable.
 
 Admissible Heuristic
     A heuristic that never overestimates the true cost to reach the goal ($0 \le h(n) \le h^*(n)$). If a heuristic is admissible, A* applied to a Search Tree is mathematically guaranteed to find the optimal path.
 
 Adversarial Evasion
-    A deployment-phase attack where an adversary subtly alters the physical environment or input data (e.g., using digital static or specialized camouflage) to mathematically force an already-trained AI model to make a highly confident, incorrect prediction.
+    A deployment-phase attack in which an adversary alters the input to an already-trained model (digitally, or physically with patches, camouflage, or decoys) so that it makes a confident, incorrect prediction. The altered inputs are usually crafted using the gradients of the target model or a similar one.
 
 Adversarial Example
     An input that has been deliberately, and often imperceptibly, modified so that a trained model makes a confident but incorrect prediction (e.g., faint added noise that causes an image classifier to label a panda as a gibbon). The basic tool behind {term}`Adversarial Evasion`.
@@ -40,14 +40,23 @@ Adversarial Example
 Adversarial Search
     A class of search algorithms designed for competitive environments where multiple agents have conflicting goals, typically modeled as a zero-sum game.
 
+Adversarial Training
+    A defense in which a model is trained on adversarial examples generated during training, so that it learns to resist them. Improves robustness to the attacks it trains on, but increases training cost and often lowers accuracy on clean data.
+
 Agent
     A system that processes information and produces an output from an input. It perceives its environment and takes actions to achieve a specific goal.
 
+Agent Loop
+    The control loop that runs an AI agent: send the goal and history to the model, execute any tool calls it requests, add the results to the history, and repeat until the model gives a final answer or a step, time, or cost limit is reached.
+
 Agentic AI
-    An AI system endowed with agency: the capacity to autonomously plan, reason, use tools, and take actions over multiple steps to achieve a complex goal, rather than simply reacting to a single prompt.
+    AI systems that pursue a goal over multiple steps by planning, calling tools, observing the results, and adapting, rather than producing a single response to a single prompt. Ranges from fixed workflows (steps set by code) to agents (steps chosen by the model).
+
+Agentic Workflow
+    A multi-step LLM system whose steps are fixed in advance by code (for example, extract, then look up, then draft), as opposed to an agent, in which the model chooses the steps. More predictable, cheaper, and easier to test when the steps are known.
 
 Algorithmic Bias
-    A failure mode where an AI system produces systematically prejudiced or skewed results, usually caused by imbalanced, incomplete, or historically biased training data.
+    Systematically worse or unfair results from an AI system for particular groups of people or particular situations. Typically stems from training data (unrepresentative, historical, or mismatched), the training objective (such as overall accuracy or a proxy label), or rules set by people (such as thresholds and scope of use). Distinct from statistical bias (underfitting).
 
 Ancestor (Bayesian Network)
     In a Bayesian network graph, any node along an upstream directed path that leads to a given target node. If directed edges connect $A \to B \to C$, then $A$ is an ancestor of both $B$ and $C$.
@@ -73,8 +82,14 @@ Artificial Neural Network (ANN)
 Autoencoder
     An unsupervised neural network architecture consisting of an encoder and decoder, trained to reconstruct its own input. Used for anomaly detection (such as zero-day cyber intrusions) by measuring reconstruction failure, though unusual inputs are not necessarily malicious.
 
+Automation Bias
+    The human tendency to over-trust recommendations from an automated system and accept them without enough scrutiny, or, after false alarms, to stop trusting it altogether. Undermines human oversight of AI systems.
+
 Autoregressive Generation
     Producing output one token at a time, where each newly generated token is appended to the input and used to predict the next one. The way decoder-only LLMs write their replies.
+
+Backdoor Attack
+    A form of data poisoning in which training examples containing a specific trigger pattern are labeled with the attacker's chosen class, so the model behaves normally on clean inputs but outputs that class whenever the trigger appears. Also called a trojan.
 
 Backpropagation
     The core algorithm used to train neural networks. It calculates the gradient (error) of the loss function with respect to every weight in the network, mathematically working backward from the output layer to the input layer.
@@ -122,7 +137,7 @@ Byte-Pair Encoding (BPE)
     A tokenizer-training algorithm that starts from single characters (or bytes) and repeatedly merges the most frequent adjacent pair of symbols into a new vocabulary entry. Frequent words become single tokens, while rare or unseen words are split into smaller pieces.
 
 Cascading Hallucination
-    A failure mode unique to multi-agent systems where one agent hallucinates a fact or capability, and other agents subsequently accept that hallucination as truth, rapidly derailing the entire workflow or simulation.
+    A failure mode in multi-agent and multi-step systems in which one agent or step produces a fabricated fact or capability that is accepted unchecked, so later agents or steps build on it and derail the workflow or simulation. Prevented by validating checkable facts in code.
 
 Catastrophic Forgetting
     The loss of useful pre-trained knowledge when a network is trained on new data with too large a learning rate, so that its existing weights are quickly overwritten. Avoided during fine-tuning by freezing early layers and using a small learning rate.
@@ -169,6 +184,9 @@ Connectionism
 Consistency
     A property of a heuristic where the estimated cost to the goal from node A is no greater than the step cost to a neighboring node C, plus the estimated cost from C to the goal ($h(A) \le \text{cost}(A \to C) + h(C)$). If consistent, A* Graph Search is guaranteed to be optimal.
 
+Context Degradation
+    Loss of agent performance over long runs as the context window fills with detailed history, so that early goals and key facts are buried or truncated. Mitigated by summarizing older steps and keeping key facts in a structured state.
+
 Context Window
     The maximum number of tokens (input plus generated output) a Large Language Model can process in a single request. Because API calls are stateless, the whole conversation history must fit inside it. In agentic AI, this serves as the agent's Short-Term Memory.
 
@@ -194,7 +212,7 @@ Data Augmentation
     Creating additional training examples by applying label-preserving transformations (such as rotations, flips, or brightness changes) to existing data. Reduces overfitting when labeled data is limited; valid transformations depend on the domain (all 90-degree rotations are valid for overhead imagery but not for street-level photos).
 
 Data Poisoning
-    A training-phase attack where an adversary infiltrates a data pipeline and subtly alters the training examples or labels, causing the AI to learn a malicious, hidden rule (a "backdoor") that the adversary can exploit later in combat.
+    A training-phase attack in which an adversary corrupts training data or labels, for example by flipping labels or inserting a hidden trigger pattern, so that the model learns behavior the attacker can exploit later. A backdoored model can behave normally on clean test data.
 
 Decision Threshold
     The probability cutoff that converts a classifier's output score into a yes-or-no prediction. Lowering it raises recall and lowers precision; raising it does the opposite. Choosing it is where mission risk tolerance enters the system.
@@ -284,7 +302,7 @@ Expert System
     An early form of Symbolic AI that attempts to mimic human expertise by utilizing an inference engine to process a massive knowledge base of hardcoded, explicit "if-then" rules.
 
 Explainable AI (XAI)
-    A field of research and a set of mathematical tools (like SHAP) designed to make the internal mechanics and outputs of "black box" machine learning models understandable to human operators, ensuring trust and traceability.
+    Methods for helping people understand why an AI model produced a particular output, such as feature importance, SHAP, LIME, saliency maps, and model documentation. Supports verification, debugging, accountability, and fairness audits, and the traceability required for mission-critical systems; explanations describe the model, not causes in the world.
 
 Exploding Gradient
     A training failure where gradients grow uncontrollably large as they are multiplied backward through many layers, causing unstable weight updates and a loss that diverges (often to NaN).
@@ -298,6 +316,9 @@ F-beta Score
 F1-Score
     The harmonic mean of Precision and Recall. It provides a single, balanced mathematical metric to evaluate a model's performance, especially when dealing with highly imbalanced datasets.
 
+Fairness Metrics
+    Quantitative definitions of fairness for a classifier, such as equal accuracy, equal false positive rates, or equal false negative rates across groups. When groups have different base rates, a classifier generally cannot satisfy all of them at once, so choosing one is a documented human judgment.
+
 Faithfulness
     In RAG evaluation, the degree to which every claim in a generated answer is supported by the retrieved sources it cites. An answer can be fluent and even correct but unfaithful if it relies on information not in the sources.
 
@@ -306,6 +327,9 @@ False Negative (Type II Error)
 
 False Positive (Type I Error)
     A failure where the model predicts that a condition is present, but it is actually absent (e.g., the AI predicts an enemy, but it is a civilian). This leads to false alarms, wasted resources, and collateral damage.
+
+Fast Gradient Sign Method (FGSM)
+    A simple adversarial attack that changes every input feature by a small amount epsilon in the direction that most increases the model's loss: x' = x + epsilon * sign(gradient of the loss with respect to x).
 
 Feature Engineering
     The manual process of designing and computing input features from raw data using human domain expertise (e.g., measuring pulse width from a radar signal). Deep learning largely replaces this step with learned representations.
@@ -421,6 +445,12 @@ Hidden Variable
 Hierarchical Feature Learning
     The process by which deep neural networks autonomously learn simple concepts (like lines and edges) in early layers and mathematically combine them into complex tactical concepts (like vehicles or radar structures) in deeper layers.
 
+Historical Bias
+    Bias that enters a model because its training data reflects past decisions or conditions that were themselves unfair, so the model learns to reproduce them even when the data is accurately recorded.
+
+Human-in-the-Loop
+    A system design in which a person must review or approve certain AI outputs or actions, especially consequential or irreversible ones, before they take effect.
+
 Hybrid Search
     Combining semantic (vector) search with keyword search and merging their results, so a system finds passages that match a query's meaning or its exact terms, such as error codes, part numbers, and names.
 
@@ -505,6 +535,9 @@ LIFO (Last-In, First-Out) Stack
 Likelihood
     In Bayes' Theorem, the probability of observing a specific piece of evidence assuming that a particular hypothesis is true.
 
+LIME (Local Interpretable Model-agnostic Explanations)
+    An explanation method that explains a single prediction by fitting a simple, interpretable model (such as a linear model) to the complex model's behavior on slightly varied copies of that input.
+
 Local Receptive Field
     The small region of the input (e.g., a 3 × 3 patch of pixels) that a single neuron in a convolutional layer connects to.
 
@@ -518,7 +551,7 @@ Long Short-Term Memory (LSTM)
     A type of {term}`Recurrent Neural Network (RNN)` that uses gating mechanisms to decide what information to remember and what to forget, allowing it to learn longer-range patterns in sequences than a plain RNN.
 
 Long-Term Memory (Agentic)
-    An AI agent's ability to store and recall information across different, isolated chat sessions, typically implemented using a Vector Database and Retrieval-Augmented Generation (RAG).
+    Information an AI agent can recall across separate runs or sessions, such as past results, notes, or documents, typically stored in a vector database and retrieved when relevant (RAG).
 
 Loss Function (Cost Function)
     A mathematical function that evaluates how far off a network's predictions are from the true targets. The network's entire training goal is to minimize this value.
@@ -550,6 +583,12 @@ Metadata Filtering
 Minimax
     A foundational adversarial decision-making algorithm where one agent (MAX) attempts to maximize a tactical score, while the opposing agent (MIN) acts perfectly to minimize that same score.
 
+Model Card
+    A short document published with a trained model that states its intended use, training data, evaluation results (including per-group and per-condition performance), known limitations, and situations where it should not be used. Supports traceability and accountability.
+
+Multi-Agent System
+    An AI architecture in which several agents, each with its own instructions, tools, and context, divide a task and coordinate, for example as orchestrator and workers, generator and critic, or opposing sides in a simulation.
+
 Multi-Head Attention
     Running several self-attention calculations in parallel, each with its own learned query, key, and value matrices, and concatenating the results. Lets the model capture several kinds of relationships between tokens at once.
 
@@ -575,7 +614,7 @@ Observation (Emission)
     The measurable signal, sensor reading, or feature value generated by a physical system at time step $t$ according to its emission model.
 
 Observation (ReAct)
-    The step in the ReAct loop where the result of an external tool call is returned and injected back into the agent's context window, allowing the agent to evaluate the outcome of its action.
+    The step in the ReAct loop where the result of a tool call, produced by the application's code (including any error message), is returned and added to the agent's context, so the agent can evaluate the outcome of its action.
 
 Open-Weight Model
     A model whose trained weights are published so it can be downloaded and run on one's own hardware (for example, Llama). Useful when data cannot be sent to an external API.
@@ -625,6 +664,9 @@ Preprocessing
 Pre-Training
     The initial, most expensive training phase of an LLM, in which it learns from a very large body of unlabeled text (often trillions of tokens) by repeatedly predicting the next token. Produces a base model that has absorbed grammar, facts, and patterns but is not yet an assistant.
 
+Principle of Least Privilege
+    A security principle stating that each user, program, or AI tool should have only the minimum access and permissions needed for its task, limiting the damage if it is misused or manipulated.
+
 Prior Probability
     In Bayes' Theorem, the baseline, historical probability of a hypothesis occurring *before* any new evidence is observed.
 
@@ -652,6 +694,9 @@ Prompt Injection
 Prompt Template
     A reusable prompt containing placeholders (for example, {topic} or {document}) that a program fills in for each request, so the same tested instructions are applied consistently to many inputs.
 
+Proxy Label
+    A measurable stand-in used as a training label when the quantity of real interest cannot be observed directly, such as health-care spending as a proxy for health needs. A model can predict the proxy well and still be biased if the proxy differs systematically across groups.
+
 Pruning
     A model-compression technique that removes weights or entire filters contributing little to the output, followed by brief retraining to recover accuracy.
 
@@ -671,7 +716,7 @@ Rate Limit
     A cap a service places on how many requests or tokens a client may use per unit of time. Exceeding it typically returns an HTTP 429 error, which should be handled by retrying with exponential backoff.
 
 ReAct (Reasoning and Acting)
-    An agentic architecture and prompting strategy that forces an LLM to alternate between articulating explicit reasoning (Thought) and executing tool calls (Action), using the results (Observation) to guide subsequent steps.
+    An agent design pattern in which an LLM repeatedly alternates between stating its reasoning (Thought), requesting a tool call (Action), and reading the result (Observation) until it reaches a final answer or a limit stops it.
 
 Recall (Sensitivity)
     An operational metric answering: "Out of all the true positive targets that actually existed in the environment, how many did the model successfully find?" Calculated as TP / (TP + FN).
@@ -687,6 +732,12 @@ Reconstruction Error
 
 Recurrent Neural Network (RNN)
     A neural network architecture for sequential data that processes one element at a time while carrying a hidden memory vector forward from step to step. Largely superseded by Transformers for large-scale language tasks.
+
+Red Teaming
+    Having a separate team deliberately attack or misuse a system before deployment, for example with adversarial examples, poisoned data, or prompt injection, to find weaknesses before an adversary does.
+
+Reflection (Agentic)
+    A technique in which an agent reviews the results of its actions or its own draft output, identifies errors, and revises its plan or answer. Most reliable when it is grounded in external feedback such as tool results or test outcomes.
 
 Reflex Agent
     An AI agent that makes decisions purely by reacting to current, immediate input/perceptions, without relying on internal memory of past events.
@@ -743,10 +794,10 @@ Semantic Search
     Search that ranks documents by similarity of meaning rather than exact word matches, by comparing the vector embedding of the query with the embeddings of the documents. Often combined with keyword search, which handles exact strings such as codes and names better.
 
 SHAP (SHapley Additive exPlanations)
-    A mathematical method used in Explainable AI (XAI) based on cooperative game theory. It assigns a specific numerical value to each input feature, representing exactly how much that feature contributed to pushing the model's final prediction away from the baseline average.
+    A local explanation method based on Shapley values from cooperative game theory. It assigns each input feature a value such that the baseline (the model's average prediction) plus all feature values equals the model's prediction for that input. Shows which features the model relied on, not which features cause the outcome; usually estimated rather than computed exactly.
 
 Short-Term Memory (Agentic)
-    An AI agent's immediate, temporary memory, strictly limited by the model's context window. It tracks the immediate sequence of thoughts, actions, and observations during the current operational loop.
+    An AI agent's working memory during a single run: the goal plus every thought, tool call, and result so far, held in the context window and resent with each step. Limited by the context window and grows more costly as the run continues.
 
 Shortcut Learning
     A failure mode where a model learns an easy but spurious pattern that happens to correlate with the labels in the training data (e.g., snowy backgrounds instead of the animal itself), then fails when that correlation does not hold in the real world.
@@ -835,6 +886,9 @@ Token Embedding
 Tokenization
     The process of splitting raw text into tokens (often sub-word chunks learned with byte-pair encoding) and mapping each token to an integer ID so it can be processed by a neural network. Tokens are the unit of an LLM's context window, speed, and API cost.
 
+Tool Use (Function Calling)
+    An LLM capability in which the model is given descriptions of available functions (names, purposes, and input schemas) and responds with a structured request to call one. The application's code executes the function and returns the result to the model.
+
 Top-k Retrieval
     Returning the k stored chunks with the highest similarity scores to the query. In RAG, k sets how much retrieved text is placed in the prompt, trading the chance of including the answer against token cost and distraction.
 
@@ -909,5 +963,4 @@ Zero-Shot Prompting
 
 Zero-Sum Game
     A mathematical representation of a situation in adversarial search (like Minimax) where one agent's gain is exactly balanced by the opponent's loss.
-
 ```
